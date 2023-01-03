@@ -14,5 +14,16 @@ module.exports = {
     // LIVE SRVER CONFIG
     stripe_key:'sk_test_51Ls8TNSH53KUcZSQuxlbVWzqhchDrwR7fmTwgQWjP6mRL0dlDDQIo3rOdRKh4maRUB0aMokGwflscSHMwKz4RqRP00F0ndXOaB', //test
     // mailUrl : 'http://18.217.124.116/',
-    stripe_url: 'http://espsofttech.in:7007/stripe/'
+    stripe_url: 'http://espsofttech.in:7007/stripe/',
+
+    //  nodemailer config
+    host:'smtp.gmail.com',
+    port :456,
+    secure:true,
+    user1 :'developer@espsofttech.com',
+    pass: 'Yd32r&DXa'
+    
+
+
+
   }
