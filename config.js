@@ -8,7 +8,7 @@ module.exports = {
       SESSION_EXPIRES_IN: '24h',
       imageUrl:'',
       contractAddress : '0xFe976ce253d10F7D34817236f040C8e4Daa4440B',
-      mailUrl : 'https://espsofttech.org/silky_exchange/',
+      mailUrl : 'https://espsofttech.org/crypto-wallet/',
       // mailUrl : 'http://localhost:3000/silky_exchange/',
   
     // LIVE SRVER CONFIG
@@ -18,7 +18,7 @@ module.exports = {
 
     //  nodemailer config
     host:'smtp.gmail.com',
-    port :456,
+    port :465,
     secure:true,
     user1 :'developer@espsofttech.com',
     pass: 'Yd32r&DXa'
