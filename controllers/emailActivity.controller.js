@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const config = require('../config')
 exports.Activity = async function (email,subject ,headerMSG,headerMSG1, text) {
-    
+   console.log('email,subject ,headerMSG,headerMSG1, text : - ',email,subject ,headerMSG,headerMSG1, text)
     let transporter = nodemailer.createTransport({
         host: config.host,
         port: config.port,
@@ -15,7 +15,7 @@ exports.Activity = async function (email,subject ,headerMSG,headerMSG1, text) {
         }
     });
     let mailOptions = {
-        from: 'developer@espsofttech.com',
+        from: config.user1,
         to: `${email}`,
         subject: subject,
         html: ` <body>
@@ -65,6 +65,9 @@ exports.Activity = async function (email,subject ,headerMSG,headerMSG1, text) {
         </body>`
     };
     transporter.sendMail(mailOptions, function (error, info) {
+       console.log('error:',error)
+       console.log('info:',info)
+
         if (error) {
             return false;
         } else {

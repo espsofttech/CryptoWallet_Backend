@@ -4,7 +4,7 @@ const emailActivity = require('./emailActivity.controller');
 const config = require("../config");
 const { request } = require("express");
 const jwt = require('jsonwebtoken')
-const speakeasy= require('speakeasy')
+const speakeasy = require('speakeasy')
 const QRCode = require('qrcode')
 
 const userModel = require("../models/user.model");
@@ -24,14 +24,17 @@ const registerUser = async (req, res) => {
         .status(409)
         .send({ status: false, msg: "duplicate email not allowed" });
     }
-    const Token = jwt.sign({
-        email: req.body.email
-    }, config.JWT_SECRET_KEY)
 
-    let headerMSG =`You're almost there!`
+    console.log('Register')
+    const Token = jwt.sign({
+      email: req.body.email
+    }, config.JWT_SECRET_KEY)
+    console.log('Token:',Token)
+
+    let headerMSG = `You're almost there!`
     let headerMSG1 = `Silky Exchange is delighted to have you on board ! <br/>To start exploring Silky Exchange, please confirm your Email address.`
 
-    let mailmsg = `
+    let mailmsg11 = `
                 <h2>Please <a href='${config.mailUrl}verifyAccount/${Token}'>click here </a> to activate your account</h2>`;
 
     let mailMsg = emailActivity.Activity(
@@ -39,8 +42,9 @@ const registerUser = async (req, res) => {
       "Account Activation Link",
       headerMSG,
       headerMSG1,
-      mailmsg
+      mailmsg11
     );
+    console.log('mailMsg:',mailMsg)
     if (mailMsg) {
       let secret = speakeasy.generateSecret({ length: 20 });
       QRCode.toDataURL(secret.otpauth_url, async function (err, data_url) {
@@ -69,7 +73,7 @@ const registerUser = async (req, res) => {
         }
       });
     }
-     else {
+    else {
       return res
         .status(400)
         .send({ status: false, msg: " something went wrong" });
