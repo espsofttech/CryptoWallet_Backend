@@ -33,9 +33,9 @@ var cron = require('node-cron')
 
        app.use(cors());
 
-    //    app.get("/testme", function (req, res) {
-    //     res.send("node is running")
-    // })
+       app.get("/", function (req, res) {
+        res.send("node is running")
+    })
     
      app.use('/', routes)
 
