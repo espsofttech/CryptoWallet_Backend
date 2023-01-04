@@ -65,7 +65,7 @@ const registerUser = async (req, res) => {
         if (dataEnter) {
           return res
             .status(201)
-            .send({ status: true, msg: "email has been sent succesfully" });
+            .send({ status: true, msg: "email has been sent succesfully" , Token:Token});
         } else {
           return res
             .status(400)

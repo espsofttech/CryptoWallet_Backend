@@ -40,10 +40,25 @@ exports.loginUserSchema = [
         .withMessage('Password is required')
 ];
 
- exports.resetPasswordSchema=[
+ exports.forgetPasswordSchema=[
     check('email')
     .not().isEmpty()
     .withMessage('email is required')
     .isEmail()
     .withMessage("please enter a valid email")
+ ]
+
+ exports.resetPasswordSchema=[
+    check('password')
+    .not().isEmpty()
+    .withMessage("password is required")
+    .notEmpty()
+    .isLength({min:5})
+    .withMessage("password should have minimun 5 characters"),
+    check("confirm_password")
+    .not().isEmpty()
+    .custom((value,{req})=>value ===req.body.password)
+    .withMessage('password and confirm password does not match')
+
+
  ]
