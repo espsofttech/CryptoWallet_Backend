@@ -26,6 +26,17 @@ class userModel {
         return result;
      }
 
+     verifyAccount = async (email)=>{
+        let sql = `UPDATE users SET  is_email_verify = 1 WHERE email = '${email}'`;
+        const [result , fields]=await promisePool.query(sql)
+        return result;
+      }
+      resetPassword = async (email)=>{
+        let sql = `UPDATE users SET password ='${password}' WHERE email='${email}'`;
+        const [ result , fields]=await promisePool.query(sql)
+        return result;
+     }
+
  }
 
 

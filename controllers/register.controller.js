@@ -31,8 +31,8 @@ const registerUser = async (req, res) => {
     }, config.JWT_SECRET_KEY)
     console.log('Token:',Token)
 
-    let headerMSG = `You're almost there!`
-    let headerMSG1 = `Silky Exchange is delighted to have you on board ! <br/>To start exploring Silky Exchange, please confirm your Email address.`
+    let headerMSG =`You're almost there!`
+    let headerMSG1 = `crypto_wallet is delighted to have you on board ! <br/>To start exploring crypto_wallet, please confirm your Email address.`
 
     let mailmsg11 = `
                 <h2>Please <a href='${config.mailUrl}verifyAccount/${Token}'>click here </a> to activate your account</h2>`;
