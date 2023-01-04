@@ -14,7 +14,7 @@ app.use(cors());
 router.use(bodyParser.json());
 router.use(
     bodyParser.urlencoded({
-        extended: true,
+        extended: true
     })
 );
 const pool = mysql.createPool({ host: config.mysqlHost, user: config.user, password: process.env.DB_PASS || config.password, database: config.database, port: config.mysqlPort });
@@ -31,6 +31,22 @@ router.get('/testme' , function(req, res){
     }
 })
 
+
+const registercontroller = require('../controllers/register.controller')
+const logincontroller = require('../controllers/login.controller')
+const usercontroller = require('../controllers/user.controller')
+
+
+
+const{registerUserSchema,loginUserSchema, resetPasswordSchema}=require('../middleware/validators/userValidators.middleware');
+
+router.post('/createUser',registerUserSchema,registercontroller.registerUser.bind());
+
+router.post('/loginuser',loginUserSchema,logincontroller.login.bind());
+
+
+//  forget password 
+ router.post('/forgetPassword',resetPasswordSchema,logincontroller.forgetPassword.bind());
 
 
 
