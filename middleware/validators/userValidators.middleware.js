@@ -48,7 +48,7 @@ exports.loginUserSchema = [
     .withMessage("please enter a valid email")
  ]
 
- exports.resetPasswordSchema=[
+ exports.changePasswordSchema=[
     check('password')
     .not().isEmpty()
     .withMessage("password is required")

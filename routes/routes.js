@@ -38,7 +38,8 @@ const usercontroller = require('../controllers/user.controller')
 
 
 
-const{registerUserSchema,loginUserSchema, forgetPasswordSchema,resetPasswordSchema}=require('../middleware/validators/userValidators.middleware');
+const{registerUserSchema,loginUserSchema, forgetPasswordSchema,changePasswordSchema
+}=require('../middleware/validators/userValidators.middleware');
 
 router.post('/createUser',registerUserSchema,registercontroller.registerUser.bind());
 
@@ -48,8 +49,12 @@ router.post('/loginuser',loginUserSchema,logincontroller.login.bind());
 //  forget password 
  router.post('/forgetPassword',forgetPasswordSchema,logincontroller.forgetPassword.bind());
 //  reset password
+router.post('/changePassword',ensureWebToken, changePasswordSchema, logincontroller.changePassword.bind())
+// verify account
+router.post('/verifyAccount',logincontroller.verifyAccount.bind());
 
-router.post('/changePassword',ensureWebToken, resetPasswordSchema, logincontroller.resetPassword.bind())
+// resetPassword
+router.post('/resetPassword',changePasswordSchema,logincontroller.ResetPassword.bind());
 
 function ensureWebToken(req, res, next) {
     const x_access_token = req.headers['authorization'];
