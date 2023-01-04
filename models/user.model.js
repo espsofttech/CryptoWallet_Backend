@@ -36,7 +36,36 @@ class userModel {
         const [ result , fields]=await promisePool.query(sql)
         return result;
      }
+     getAllDetail= async()=>{
+        let sql = `SELECT * FROM users`
+        const[result , fields]=await promisePool.query(sql)
+        return result
 
+     }
+     FindById=async(id)=>{
+        let sql = `SELECT * FROM users WHERE id='${id}'`;
+        const[result , fields]=await promisePool.query(sql)
+        return result;
+     }
+     getUserById = async(id)=>{
+        let sql = `SELECT * FROM users where id='${id}'`;
+        const[result , fields]=await promisePool.query(sql)
+        return result;
+     }
+
+
+userUpdateById=async(data,id)=>{
+   console.log('data,id:',data,id)
+let sql = `UPDATE users SET 
+first_name = '${data.first_name}',
+last_name='${data.last_name}',
+image='${data.image}',
+Description='${data.Description}'
+WHERE id = '${id}'`;
+console.log(sql)
+const[result , fields]=await promisePool.query(sql)
+return result;
+     }
  }
 
 
