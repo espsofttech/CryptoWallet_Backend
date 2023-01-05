@@ -73,6 +73,8 @@ const usercontroller = require("../controllers/user.controller");
 
 // identity controller
 const identitycontroller = require("../controllers/identity.controller");
+// kyc controller
+const kycController=require('../controllers/kycController')
 
 // all schema
 const {registerUserSchema,loginUserSchema,forgetPasswordSchema,changePasswordSchema} = require("../middleware/validators/userValidators.middleware");
@@ -113,17 +115,25 @@ router.put('/updateIdentity/:id',identitycontroller.updateIdentity.bind())
 //  delete data from identity model
 router.delete("/deleteData/:id" , identitycontroller.deleteIdentity.bind());
 
-// 
+// get all list
 router.get('/getAllIdentity',identitycontroller.getAllData.bind());
+//   kyc apis
 
+router.post('/InsertKycData',profileUpload,kycController.insertData.bind());
 
+// get kyc by id
 
+router.get('/getAllKycDetail',kycController.getAllkyc.bind());
 
+// 
+router.get('/getKycDetailById/:id',kycController.getKycById.bind())
 
+// update kyc approval 
 
+router.put('/successKyc/:id',kycController.UpdateSuccessKyc.bind())
+// reject kyc approval
 
-
-
+router.put('/rejectKyc/:id',kycController.rejectKyc.bind())
 
 
 
