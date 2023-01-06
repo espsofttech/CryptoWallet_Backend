@@ -15,7 +15,7 @@ class userModel {
 
 
      saveUserDetails = async ( data)=>{
-        let sql = `INSERT INTO users (first_name , last_name , email, password, referral_code , image) VALUES ('${data.first_name}','${data.last_name}','${data.email}','${data.password}','${data.referral_code}','${data.image}')`;
+        let sql = `INSERT INTO users (first_name , last_name , email, password,image) VALUES ('${data.first_name}','${data.last_name}','${data.email}','${data.password}','${data.image}')`;
         const [result , fields]= await promisePool.query(sql)
         return result;
      }
@@ -55,18 +55,44 @@ class userModel {
 
 
 userUpdateById=async(data,id)=>{
-   console.log('data,id:',data,id)
+ 
 let sql = `UPDATE users SET 
 first_name = '${data.first_name}',
 last_name='${data.last_name}',
 image='${data.image}',
 Description='${data.Description}'
 WHERE id = '${id}'`;
-console.log(sql)
+
 const[result , fields]=await promisePool.query(sql)
 return result;
      }
+ 
+
+unblock=async(id)=>{
+let sql =`UPDATE users SET is_Block =0 WHERE id ='${id}'`
+const[result , fields]=await promisePool.query(sql)
+return result;
  }
 
+ blockUser=async(id)=>{
+   let sql =`UPDATE users SET is_Block =1 WHERE id ='${id}'`
+   const[result , fields]=await promisePool.query(sql)
+   return result;
+    }
+    
+    findBlock= async(email)=>{
+      let sql = `SELECT is_Block FROM  users WHERE email = '${email}'`;
+      const[result , fields]=await promisePool.query(sql)
+      return result;
+       }
+       checkPassword=async(email)=>{
+         let sql = `SELECT * FROM  users WHERE email = '${email}'`;
+         const[result , fields]=await promisePool.query(sql)
+         return result;
+          }
+       
+    }
 
+   
+   
  module.exports= new userModel

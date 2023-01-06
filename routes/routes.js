@@ -77,7 +77,7 @@ const identitycontroller = require("../controllers/identity.controller");
 const kycController=require('../controllers/kycController')
 
 // all schema
-const {registerUserSchema,loginUserSchema,forgetPasswordSchema,changePasswordSchema} = require("../middleware/validators/userValidators.middleware");
+const {registerUserSchema,loginUserSchema,forgetPasswordSchema,changePasswordSchema,resetPasswordSchema} = require("../middleware/validators/userValidators.middleware");
 
 
 router.post("/createUser",registerUserSchema,registercontroller.registerUser.bind());
@@ -87,13 +87,13 @@ router.post("/loginuser", loginUserSchema, logincontroller.login.bind());
 //------------------------  forget password-------------------------
 router.post("/forgetPassword",forgetPasswordSchema,logincontroller.forgetPassword.bind());
 // ----------------------- reset password----------------------
-router.post("/changePassword",ensureWebToken,changePasswordSchema,logincontroller.changePassword.bind());
+router.post("/changePassword",changePasswordSchema,logincontroller.changePassword.bind());
 //----------------------- verify account-------------------------
 
 router.post("/verifyAccount", logincontroller.verifyAccount.bind());
 //------------------------ resetPassword-------------------------
 
-router.post("/resetPassword",changePasswordSchema,logincontroller.ResetPassword.bind());
+router.post("/resetPassword",resetPasswordSchema,logincontroller.ResetPassword.bind());
 // -------------------------update user-------------------------
 
 router.put("/updateUser/:id",profileUpload,usercontroller.updateUserById.bind());
@@ -103,6 +103,9 @@ router.get("/getUserDetailsById/:id", usercontroller.getUserDetailById.bind());
 //  --------------------get all user--------------------------
 router.get("/getAllUserDetails", usercontroller.getAllUsers.bind());
 
+//  block and unblock
+
+router.put("/updateBlock/:id",usercontroller.updateBlock.bind());
 
 // insert data into identity model 
 
@@ -119,7 +122,7 @@ router.delete("/deleteData/:id" , identitycontroller.deleteIdentity.bind());
 router.get('/getAllIdentity',identitycontroller.getAllData.bind());
 //   kyc apis
 
-router.post('/InsertKycData',profileUpload,kycController.insertData.bind());
+router.post('/InsertKycData/:id',profileUpload,kycController.insertData.bind());
 
 // get kyc by id
 

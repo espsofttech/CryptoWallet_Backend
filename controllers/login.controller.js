@@ -110,15 +110,23 @@ const login = async (req, res) => {
         let hash = CryptoJS.SHA256(req.body.password).toString(
           CryptoJS.enc.Hex
         );
+      
+
         if (checkEmail[0].password !== hash) {
           return res
             .status(400)
             .send({ status: false, msg: "password does not match" });
-        } else {
-          return res
-            .status(200)
-            .send({ status: true, msg: "login successfull ", token: Token });
         }
+        
+          let check = await userModel.findBlock(req.body.email)
+            if(Object.values(check[0])==1){
+              return res.status(200).send({status:true , msg :"you cannot proceed further because you are blocked by admin"})
+            }
+            
+        return res
+            .status(200)
+            .send({ status: true, msg: "login successfull ", token: Token ,data:checkEmail[0]});
+        
       }
     } else {
       return res
@@ -178,18 +186,23 @@ const forgetPassword = async (req, res) => {
 
 const changePassword = async (req, res) => {
   try {
-    // jwt.verify(
-    //   req.body.token,
-    //   config.JWT_SECRET_KEY,
-    //   async function (err, decodedToken) {
-    //     if (err) {
-    //       return res
-    //         .status(200)
-    //         .send({ status: false, msg: "Incorrect or expired link" });
-    //     }
 
-    const hash = CryptoJS.SHA256(req.body.password).toString(CryptoJS.enc.Hex);
-
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(200).send({
+        status: false,
+        msg: `${errors.errors[0].msg}`,
+      });
+    }
+const hash1 = CryptoJS.SHA256(req.body.old_password).toString(CryptoJS.enc.Hex);
+const checkPass= await userModel.checkPassword(req.body.email)
+if(checkPass[0].password !==hash1){
+  return res
+            .status(400)
+            .send({ status: false, msg: " old password does not match" });
+}
+const hash = CryptoJS.SHA256(req.body.password).toString(CryptoJS.enc.Hex);
+// 091dc6098bb23546ae6656e7e7cc4b3a3c7523412c9bc6e4597c36d71215ee81
     const updatePass = await userModel.updatePassword(hash);
     console.log(updatePass);
     if (updatePass) {
@@ -270,7 +283,13 @@ const ResetPassword = async (req, res) => {
         let hash = CryptoJS.SHA256(req.body.password).toString(
           CryptoJS.enc.Hex
         );
-
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res.status(200).send({
+            status: false,
+            msg: `${errors.errors[0].msg}`,
+          });
+        }
         const ResetPassword = await userModel.resetPassword(
           hash,
           decodedToken.email

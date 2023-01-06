@@ -1,16 +1,7 @@
 const {body , check}= require('express-validator')
 
 exports.registerUserSchema=[
-check('first_name')
-.not().isEmpty()
-.withMessage('first name is required')
-.isLength({min:5})
-.withMessage("first name should be minimum 5 letters"),
-check('last_name')
-.not().isEmpty()
-.withMessage('first name is required')
-.isLength({min:5})
-.withMessage("last name should be minimum 5 letters"),
+
 check('email')
 .not().isEmpty()
 .withMessage('email is required')
@@ -49,6 +40,9 @@ exports.loginUserSchema = [
  ]
 
  exports.changePasswordSchema=[
+    check("old_password")
+    .not().isEmpty()
+    .withMessage(" old_password is required"),
     check('password')
     .not().isEmpty()
     .withMessage("password is required")
@@ -61,4 +55,13 @@ exports.loginUserSchema = [
     .withMessage('password and confirm password does not match')
 
 
+ ]
+
+ exports.resetPasswordSchema=[
+    check('password')
+    .not().isEmpty()
+    .withMessage("password is required")
+    .notEmpty()
+    .isLength({min:5})
+    .withMessage("password should have minimun 5 characters")
  ]
