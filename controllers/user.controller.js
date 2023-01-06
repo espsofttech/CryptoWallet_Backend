@@ -81,10 +81,9 @@ const updateBlock = async (req, res) => {
       });
     }
     let id = req.params.id;
-    let value= Object.values(req.body)
+    let value = Object.values(req.body);
 
-    if (value ==0) {
-     
+    if (value == 0) {
       const update = await userModel.unblock(id);
       if (update) {
         return res

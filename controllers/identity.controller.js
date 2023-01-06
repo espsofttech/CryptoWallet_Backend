@@ -33,7 +33,7 @@ const updateIdentity = async (req, res) => {
       return res
         .status(400)
         .send({ status: false, msg: `${errors.errors[0].msg}` });
-    } 
+    }
 
     let id = req.params.id;
 
@@ -53,40 +53,45 @@ const updateIdentity = async (req, res) => {
   }
 };
 
-
-const deleteIdentity =async(req,res)=>{
-    try{
- const errors = validationResult(req);
+const deleteIdentity = async (req, res) => {
+  try {
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res
         .status(400)
         .send({ status: false, msg: `${errors.errors[0].msg}` });
     }
-    let id = req.params.id
-        const deleteData= await IdentityModel.deleteIdentity(id);
-        if(deleteData){
-            return res.status(201).send({status:true , msg :"data deleted successfully"})
-        }else{
-            return res.status(400).send({status:false , msg :"something went wrong"})
-        }
- }catch(err){
-        return res.status(500).send({status:false , error:err.message})
+    let id = req.params.id;
+    const deleteData = await IdentityModel.deleteIdentity(id);
+    if (deleteData) {
+      return res
+        .status(201)
+        .send({ status: true, msg: "data deleted successfully" });
+    } else {
+      return res
+        .status(400)
+        .send({ status: false, msg: "something went wrong" });
     }
-}
+  } catch (err) {
+    return res.status(500).send({ status: false, error: err.message });
+  }
+};
 
- const getAllData = async(req,res)=>{
-    try{
-const getAllData= await IdentityModel.getAllData()
-if(getAllData){
-    return res.status(200).send({status:true , msg :"success" , data :getAllData})
-}else{
-    return res.status(400).send({status:false , msg :"something went wrong"}) 
-}
-
-    }catch(err){
-        return res.status(500).send({status:false , error:err.message})
+const getAllData = async (req, res) => {
+  try {
+    const getAllData = await IdentityModel.getAllData();
+    if (getAllData) {
+      return res
+        .status(200)
+        .send({ status: true, msg: "success", data: getAllData });
+    } else {
+      return res
+        .status(400)
+        .send({ status: false, msg: "something went wrong" });
     }
- }
+  } catch (err) {
+    return res.status(500).send({ status: false, error: err.message });
+  }
+};
 
-
-module.exports = { insertIdentity, updateIdentity ,deleteIdentity,getAllData};
+module.exports = { insertIdentity, updateIdentity, deleteIdentity, getAllData };

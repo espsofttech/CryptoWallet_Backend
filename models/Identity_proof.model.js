@@ -18,7 +18,6 @@ class IdentityModel {
     return result;
   };
 
-
   updateIdentity = async (data, id) => {
     let sql = `UPDATE Identity_proof SET 
     Identity_name='${data.Identity_name}'WHERE id='${id}'`;
@@ -28,18 +27,18 @@ class IdentityModel {
     return result;
   };
 
-  deleteIdentity = async(id)=>{
+  deleteIdentity = async (id) => {
     let sql = `DELETE FROM  Identity_proof WHERE id='${id}'`;
     const [result, fields] = await promisePool.query(sql);
 
     return result;
-  }
-  getAllData =async()=>{
-    let sql = `SELECT * FROM Identity_proof`
+  };
+  getAllData = async () => {
+    let sql = `SELECT * FROM Identity_proof`;
     const [result, fields] = await promisePool.query(sql);
 
     return result;
-  }
+  };
 }
 
 module.exports = new IdentityModel();
