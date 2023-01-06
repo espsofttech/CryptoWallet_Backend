@@ -17,7 +17,7 @@ router.use(
     extended: true,
   })
 );
-const multer = require("multer");
+
 const pool = mysql.createPool({
   host: config.mysqlHost,
   user: config.user,
@@ -27,6 +27,8 @@ const pool = mysql.createPool({
 });
 const promisePool = pool.promise();
 
+// for uploading images in database
+const multer = require("multer");
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./uploads");
@@ -54,6 +56,7 @@ let storage = multer.diskStorage({
 let upload = multer({ storage: storage });
 let profileUpload = upload.fields([{ name: "image", maxCount: 1 }]);
 
+//  test--------
 router.get("/testme", function (req, res) {
   try {
     return res.send({ status: true, msg: "successfull" });
@@ -62,58 +65,80 @@ router.get("/testme", function (req, res) {
   }
 });
 
+
+// controllers
 const registercontroller = require("../controllers/register.controller");
 const logincontroller = require("../controllers/login.controller");
 const usercontroller = require("../controllers/user.controller");
 
-const {
-  registerUserSchema,
-  loginUserSchema,
-  forgetPasswordSchema,
-  changePasswordSchema,
-} = require("../middleware/validators/userValidators.middleware");
+// identity controller
+const identitycontroller = require("../controllers/identity.controller");
+// kyc controller
+const kycController=require('../controllers/kycController')
 
-router.post(
-  "/createUser",
-  registerUserSchema,
-  registercontroller.registerUser.bind()
-);
+// all schema
+const {registerUserSchema,loginUserSchema,forgetPasswordSchema,changePasswordSchema} = require("../middleware/validators/userValidators.middleware");
+
+
+router.post("/createUser",registerUserSchema,registercontroller.registerUser.bind());
 
 router.post("/loginuser", loginUserSchema, logincontroller.login.bind());
 
-//  forget password
-router.post(
-  "/forgetPassword",
-  forgetPasswordSchema,
-  logincontroller.forgetPassword.bind()
-);
-//  reset password
-router.post(
-  "/changePassword",
-  ensureWebToken,
-  changePasswordSchema,
-  logincontroller.changePassword.bind()
-);
-// verify account
+//------------------------  forget password-------------------------
+router.post("/forgetPassword",forgetPasswordSchema,logincontroller.forgetPassword.bind());
+// ----------------------- reset password----------------------
+router.post("/changePassword",ensureWebToken,changePasswordSchema,logincontroller.changePassword.bind());
+//----------------------- verify account-------------------------
+
 router.post("/verifyAccount", logincontroller.verifyAccount.bind());
+//------------------------ resetPassword-------------------------
 
-// resetPassword
-router.post(
-  "/resetPassword",
-  changePasswordSchema,
-  logincontroller.ResetPassword.bind()
-);
+router.post("/resetPassword",changePasswordSchema,logincontroller.ResetPassword.bind());
+// -------------------------update user-------------------------
 
-// update user
-router.put(
-  "/updateUser/:id",
-  profileUpload,
-  usercontroller.updateUserById.bind()
-);
-// get user by id
+router.put("/updateUser/:id",profileUpload,usercontroller.updateUserById.bind());
+//------------------- get user by id--------------------------
+
 router.get("/getUserDetailsById/:id", usercontroller.getUserDetailById.bind());
-//  get all user
+//  --------------------get all user--------------------------
 router.get("/getAllUserDetails", usercontroller.getAllUsers.bind());
+
+
+// insert data into identity model 
+
+router.post("/insertIdentity",identitycontroller.insertIdentity.bind());
+
+// update data in identity model 
+
+router.put('/updateIdentity/:id',identitycontroller.updateIdentity.bind())
+
+//  delete data from identity model
+router.delete("/deleteData/:id" , identitycontroller.deleteIdentity.bind());
+
+// get all list
+router.get('/getAllIdentity',identitycontroller.getAllData.bind());
+//   kyc apis
+
+router.post('/InsertKycData',profileUpload,kycController.insertData.bind());
+
+// get kyc by id
+
+router.get('/getAllKycDetail',kycController.getAllkyc.bind());
+
+// 
+router.get('/getKycDetailById/:id',kycController.getKycById.bind())
+
+// update kyc approval 
+
+router.put('/successKyc/:id',kycController.UpdateSuccessKyc.bind())
+// reject kyc approval
+
+router.put('/rejectKyc/:id',kycController.rejectKyc.bind())
+
+
+
+
+
 
 function ensureWebToken(req, res, next) {
   const x_access_token = req.headers["authorization"];
