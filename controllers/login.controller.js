@@ -108,7 +108,7 @@ const login = async (req, res) => {
         } else {
           return res
             .status(200)
-            .send({ status: true, msg: "login successfull ", token: Token });
+            .send({ status: true, msg: "login successfull ", token: Token,data: checkEmail[0]});
         }
       }
     } else {
