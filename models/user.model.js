@@ -15,13 +15,14 @@ class userModel {
 
 
      saveUserDetails = async ( data)=>{
-        let sql = `INSERT INTO users (first_name , last_name , email, password, referral_code , image) VALUES ('${data.first_name}','${data.last_name}','${data.email}','${data.password}','${data.referral_code}','${data.image}')`;
+        let sql = `INSERT INTO users (first_name , last_name , email, password , image) VALUES ('${data.first_name}','${data.last_name}','${data.email}','${data.password}','${data.image}')`;
         const [result , fields]= await promisePool.query(sql)
         return result;
      }
 
-     updatePassword = async (data)=>{
+     updatePassword = async (password,data)=>{
         let sql = `UPDATE users SET password ='${password}' WHERE email='${data.email}'`;
+        console.log('sql1111',sql);
         const [ result , fields]=await promisePool.query(sql)
         return result;
      }
@@ -31,8 +32,9 @@ class userModel {
         const [result , fields]=await promisePool.query(sql)
         return result;
       }
-      resetPassword = async (email)=>{
-        let sql = `UPDATE users SET password ='${password}' WHERE email='${email}'`;
+      resetPassword = async (hash,email)=>{
+        let sql = `UPDATE users SET password ='${hash}' WHERE email='${email}'`;
+        console.log('sql:',sql);
         const [ result , fields]=await promisePool.query(sql)
         return result;
      }

@@ -53,12 +53,9 @@ const registerUser = async (req, res) => {
         );
 
         let data = {
-          "first_name": req.body.first_name,
-          "last_name": req.body.last_name,
+        
           "email": req.body.email,
           "password": hash,
-          "referral_code": req.body.referral_code,
-          "image": req.body.image ? req.body.image : "",
         };
         const dataEnter = await userModel.saveUserDetails(data);
         console.log("dataEnter:", dataEnter);

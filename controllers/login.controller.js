@@ -177,7 +177,7 @@ const changePassword = async (req, res) => {
 
     const hash = CryptoJS.SHA256(req.body.password).toString(CryptoJS.enc.Hex);
 
-    const updatePass = await userModel.updatePassword(hash);
+    const updatePass = await userModel.updatePassword(hash,req.body.email);
     console.log(updatePass);
     if (updatePass) {
       return res
@@ -262,6 +262,7 @@ const ResetPassword = async (req, res) => {
           hash,
           decodedToken.email
         );
+        console.log('decodedToken.email:',decodedToken.email)
         if (ResetPassword) {
           return res
             .status(201)

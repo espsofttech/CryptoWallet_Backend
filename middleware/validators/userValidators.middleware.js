@@ -1,16 +1,6 @@
 const {body , check}= require('express-validator')
 
 exports.registerUserSchema=[
-check('first_name')
-.not().isEmpty()
-.withMessage('first name is required')
-.isLength({min:5})
-.withMessage("first name should be minimum 5 letters"),
-check('last_name')
-.not().isEmpty()
-.withMessage('first name is required')
-.isLength({min:5})
-.withMessage("last name should be minimum 5 letters"),
 check('email')
 .not().isEmpty()
 .withMessage('email is required')
