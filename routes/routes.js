@@ -166,7 +166,21 @@ router.put("/successKyc/:id", kycController.UpdateSuccessKyc.bind());
 // reject kyc approval
 router.put("/rejectKyc/:id", kycController.rejectKyc.bind());
 //  bank details
-router.post("/insertBankDetails/:id",bankcontroller.insertDetails.bind())
+router.post("/insertBankDetails/:user_id",bankcontroller.insertDetails.bind())
+
+// delete bank details successfully
+router.delete("/deletBankeData/:user_id",bankcontroller.deleteBankDetails.bind());
+
+//get bank details by id
+router.get("/getBankDetailsById/:user_id",bankcontroller.getBankDetailsByID.bind());
+
+//  get all details
+router.get("/getAllBankDetails",bankcontroller.getAllBankDetails.bind());
+
+// update
+router.put("/updateBankDetails/:user_id", bankcontroller.updateDetails.bind());
+
+
 
 
 

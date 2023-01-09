@@ -30,7 +30,6 @@ class IdentityModel {
   deleteIdentity = async (id) => {
     let sql = `DELETE FROM  Identity_proof WHERE id='${id}'`;
     const [result, fields] = await promisePool.query(sql);
-
     return result;
   };
   getAllData = async () => {

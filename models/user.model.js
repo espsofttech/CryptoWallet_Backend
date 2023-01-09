@@ -25,7 +25,7 @@ class userModel {
   };
 
   updatePassword = async (data) => {
-    let sql = `UPDATE users SET password ='${password}' WHERE email='${data.email}'`;
+    let sql = `UPDATE users SET password ='${data.password}' WHERE email='${data.email}'`;
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
