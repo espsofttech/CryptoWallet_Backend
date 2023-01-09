@@ -54,7 +54,11 @@ class bankModel {
     branchName='${data.branchName}',
     AccountNumber = '${data.AccountNumber}',
     ifsc_code ='${data.ifsc_code}',
-    panCardno='${data.panCardno}'
+    panCardno='${data.panCardno}',
+    accountType='${data.accountType}',
+    GSTImage='${data.GSTImage}',
+    cancelledChequeImage='${data.cancelledChequeImage}',
+    bankStatementImage='${data.bankStatementImage}'
     WHERE user_id='${user_id}'`
     const [result, fields] = await promisePool.query(sql);
 

@@ -55,10 +55,10 @@ let storage = multer.diskStorage({
 });
 let upload = multer({ storage: storage });
 let profileUpload = upload.fields([{ name: "image", maxCount: 3 }]);
-
+let bankUpload = upload.fields([{ name: "GSTimage", maxCount: 10 },{ name: "cancelledChequeImage", maxCount: 10 },{ name: "bankStatementImage", maxCount: 10 }]);
 //  test--------
 router.get("/testme", function (req, res) {
-  try {
+  try { 
     return res.send({ status: true, msg: "successfull" });
   } catch (err) {
     return res.send({ status: false, error: err.message });
@@ -168,25 +168,20 @@ router.put("/successKyc/:id", kycController.UpdateSuccessKyc.bind());
 // reject kyc approval
 router.put("/rejectKyc/:id", kycController.rejectKyc.bind());
 //  bank details
-router.post("/insertBankDetails/:user_id", profileUpload,bankcontroller.insertDetails.bind());
+router.post("/insertBankDetails/:user_id", bankUpload,bankcontroller.insertDetails.bind());
 
-// delete bank details successfully
 router.delete(
   "/deletBankeData/:user_id",
   bankcontroller.deleteBankDetails.bind()
 );
 
-//get bank details by id
 router.get(
   "/getBankDetailsById/:user_id",
   bankcontroller.getBankDetailsByID.bind()
 );
 
-//  get all details
 router.get("/getAllBankDetails", bankcontroller.getAllBankDetails.bind());
-
-// update
-router.put("/updateBankDetails/:user_id", bankcontroller.updateDetails.bind());
+router.put("/updateBankDetails/:user_id",bankUpload,bankcontroller.updateDetails.bind());
 
 // accountType
 router.post("/accountType", accountcontroller.createAccountType.bind());
@@ -195,7 +190,6 @@ router.delete(
   "/deleteAccountData/:id",
   accountcontroller.deleteAccountData.bind()
 );
-
 // get all data
 router.get(
   "/getAllAccountDetails",
