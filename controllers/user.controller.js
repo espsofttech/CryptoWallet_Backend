@@ -1,5 +1,5 @@
 const userModel = require("../models/user.model");
-
+const { validationResult } = require("express-validator");
 const getAllUsers = async (req, res) => {
   try {
     const AllDetails = await userModel.getAllDetail();
@@ -28,7 +28,7 @@ const getUserDetailById = async (req, res) => {
       if (getDetails) {
         return res
           .status(200)
-          .send({ status: true, msg: "successfull", data: getDetails });
+          .send({ status: true, msg: "successfull", data: getDetails[0] });
       } else {
         return res
           .status(400)
@@ -55,8 +55,8 @@ const updateUserById = async (req, res) => {
 
     let id = req.params.id;
 
-    const updateUser = await userModel.userUpdateById(req.body,id);
-    console.log('updateUser',updateUser);
+    const updateUser = await userModel.userUpdateById(req.body, id);
+    console.log("updateUser", updateUser);
     if (updateUser) {
       return res
         .status(201)
@@ -71,4 +71,49 @@ const updateUserById = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, getUserDetailById, updateUserById };
+const updateBlock = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(200).send({
+        status: false,
+        msg: `${errors.errors[0].msg}`,
+      });
+    }
+    let id = req.params.id;
+    let value = Object.values(req.body);
+
+    if (value == 0) {
+      const update = await userModel.unblock(id);
+      if (update) {
+        return res
+          .status(201)
+          .send({ status: true, msg: "you are unblocked by admin" });
+      } else {
+        return res
+          .status(400)
+          .send({ status: false, msg: " somwthing went wrong" });
+      }
+    } else {
+      const block = await userModel.blockUser(id);
+      if (block) {
+        return res
+          .status(201)
+          .send({ status: true, msg: "you are blocked by admin" });
+      } else {
+        return res
+          .status(400)
+          .send({ status: false, msg: " somwthing went wrong" });
+      }
+    }
+  } catch (err) {
+    return res.status(500).send({ status: false, error: err.message });
+  }
+};
+
+module.exports = {
+  getAllUsers,
+  getUserDetailById,
+  updateUserById,
+  updateBlock,
+};

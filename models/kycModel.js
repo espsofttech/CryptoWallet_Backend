@@ -49,4 +49,4 @@ class kycModel {
     return result;
   };
 }
-module.exports = new kycModel;
+module.exports = new kycModel();

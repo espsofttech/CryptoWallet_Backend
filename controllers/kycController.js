@@ -104,31 +104,34 @@ const UpdateSuccessKyc = async (req, res) => {
 };
 
 const rejectKyc = async (req, res) => {
-    try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(200).send({
-          status: false,
-          msg: `${errors.errors[0].msg}`,
-        });
-      }
-      let id = req.params.id;
-      const update = await kycModel.rejectKyc(id);
-      if (update) {
-        return res
-          .status(201)
-          .send({ status: true, msg :"your kyc is rejected by admin" });
-      } else {
-        return res
-          .status(400)
-          .send({ status: false, msg: "something went wrong try again later" });
-      }
-    } catch (err) {
-      return res.status(500).send({ status: false, error: err.message });
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(200).send({
+        status: false,
+        msg: `${errors.errors[0].msg}`,
+      });
     }
-  };
+    let id = req.params.id;
+    const update = await kycModel.rejectKyc(id);
+    if (update) {
+      return res
+        .status(201)
+        .send({ status: true, msg: "your kyc is rejected by admin" });
+    } else {
+      return res
+        .status(400)
+        .send({ status: false, msg: "something went wrong try again later" });
+    }
+  } catch (err) {
+    return res.status(500).send({ status: false, error: err.message });
+  }
+};
 
-
-
-
-module.exports = { insertData, getAllkyc, getKycById, UpdateSuccessKyc,rejectKyc };
+module.exports = {
+  insertData,
+  getAllkyc,
+  getKycById,
+  UpdateSuccessKyc,
+  rejectKyc,
+};

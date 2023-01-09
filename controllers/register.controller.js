@@ -1,11 +1,11 @@
 const CryptoJS = require("crypto-js");
 const { validationResult } = require("express-validator");
-const emailActivity = require('./emailActivity.controller');
+const emailActivity = require("./emailActivity.controller");
 const config = require("../config");
 const { request } = require("express");
-const jwt = require('jsonwebtoken')
-const speakeasy = require('speakeasy')
-const QRCode = require('qrcode')
+const jwt = require("jsonwebtoken");
+const speakeasy = require("speakeasy");
+const QRCode = require("qrcode");
 
 const userModel = require("../models/user.model");
 
@@ -24,15 +24,15 @@ const registerUser = async (req, res) => {
         .status(409)
         .send({ status: false, msg: "duplicate email not allowed" });
     }
+    const Token = jwt.sign(
+      {
+        email: req.body.email,
+      },
+      config.JWT_SECRET_KEY
+    );
 
-    console.log('Register')
-    const Token = jwt.sign({
-      email: req.body.email
-    }, config.JWT_SECRET_KEY)
-    console.log('Token:',Token)
-
-    let headerMSG =`You're almost there!`
-    let headerMSG1 = `crypto_wallet is delighted to have you on board ! <br/>To start exploring crypto_wallet, please confirm your Email address.`
+    let headerMSG = `You're almost there!`;
+    let headerMSG1 = `crypto wallet is delighted to have you on board ! <br/>To start exploring crypto wallet, please confirm your Email address.`;
 
     let mailmsg11 = `
                 <h2>Please <a href='${config.mailUrl}verifyAccount/${Token}'>click here </a> to activate your account</h2>`;
@@ -53,24 +53,29 @@ const registerUser = async (req, res) => {
         );
 
         let data = {
-        
-          "email": req.body.email,
-          "password": hash,
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          email: req.body.email,
+          password: hash,
+          image: req.body.image ? req.body.image : "",
         };
         const dataEnter = await userModel.saveUserDetails(data);
-        console.log("dataEnter:", dataEnter);
+
         if (dataEnter) {
           return res
             .status(201)
-            .send({ status: true, msg: "email has been sent succesfully" , Token:Token});
+            .send({
+              status: true,
+              msg: "email has been sent succesfully",
+              Token: Token,
+            });
         } else {
           return res
             .status(400)
             .send({ status: false, msg: " something went wrong" });
         }
       });
-    }
-    else {
+    } else {
       return res
         .status(400)
         .send({ status: false, msg: " something went wrong" });

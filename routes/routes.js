@@ -65,7 +65,6 @@ router.get("/testme", function (req, res) {
   }
 });
 
-
 // controllers
 const registercontroller = require("../controllers/register.controller");
 const logincontroller = require("../controllers/login.controller");
@@ -74,66 +73,112 @@ const usercontroller = require("../controllers/user.controller");
 // identity controller
 const identitycontroller = require("../controllers/identity.controller");
 // kyc controller
-const kycController=require('../controllers/kycController')
+const kycController = require("../controllers/kycController");
+
+// bank controller
+const bankcontroller = require("../controllers/bankcontroller")
 
 // all schema
-const {registerUserSchema,loginUserSchema,forgetPasswordSchema,changePasswordSchema} = require("../middleware/validators/userValidators.middleware");
+const {
+  registerUserSchema,
+  loginUserSchema,
+  forgetPasswordSchema,
+  changePasswordSchema,
+  resetPasswordSchema,
+} = require("../middleware/validators/userValidators.middleware");
 
-
-router.post("/createUser",registerUserSchema,registercontroller.registerUser.bind());
+router.post(
+  "/createUser",
+  registerUserSchema,
+  registercontroller.registerUser.bind()
+);
 
 router.post("/loginuser", loginUserSchema, logincontroller.login.bind());
 
 //------------------------  forget password-------------------------
-router.post("/forgetPassword",forgetPasswordSchema,logincontroller.forgetPassword.bind());
+router.post(
+  "/forgetPassword",
+  forgetPasswordSchema,
+  logincontroller.forgetPassword.bind()
+);
 // ----------------------- reset password----------------------
-router.post("/changePassword",ensureWebToken,changePasswordSchema,logincontroller.changePassword.bind());
+router.post(
+  "/changePassword",
+  changePasswordSchema,
+  logincontroller.changePassword.bind()
+);
 //----------------------- verify account-------------------------
 
 router.post("/verifyAccount", logincontroller.verifyAccount.bind());
 //------------------------ resetPassword-------------------------
 
-router.post("/resetPassword",changePasswordSchema,logincontroller.ResetPassword.bind());
+router.post(
+  "/resetPassword",
+  resetPasswordSchema,
+  logincontroller.ResetPassword.bind()
+);
 // -------------------------update user-------------------------
 
-router.put("/updateUser/:id",profileUpload,usercontroller.updateUserById.bind());
+router.put(
+  "/updateUser/:id",
+  profileUpload,
+  usercontroller.updateUserById.bind()
+);
 //------------------- get user by id--------------------------
 
 router.get("/getUserDetailsById/:id", usercontroller.getUserDetailById.bind());
 //  --------------------get all user--------------------------
 router.get("/getAllUserDetails", usercontroller.getAllUsers.bind());
 
+//  block and unblock
 
-// insert data into identity model 
+router.put("/updateBlock/:id", usercontroller.updateBlock.bind());
 
-router.post("/insertIdentity",identitycontroller.insertIdentity.bind());
+// insert data into identity model
 
-// update data in identity model 
+router.post("/insertIdentity", identitycontroller.insertIdentity.bind());
 
-router.put('/updateIdentity/:id',identitycontroller.updateIdentity.bind())
+// update data in identity model
+
+router.put("/updateIdentity/:id", identitycontroller.updateIdentity.bind());
 
 //  delete data from identity model
-router.delete("/deleteData/:id" , identitycontroller.deleteIdentity.bind());
+router.delete("/deleteData/:id", identitycontroller.deleteIdentity.bind());
 
 // get all list
-router.get('/getAllIdentity',identitycontroller.getAllData.bind());
+router.get("/getAllIdentity", identitycontroller.getAllData.bind());
 //   kyc apis
 
-router.post('/InsertKycData',profileUpload,kycController.insertData.bind());
+router.post(
+  "/InsertKycData/:id",
+  profileUpload,
+  kycController.insertData.bind()
+);
 
 // get kyc by id
+router.get("/getAllKycDetail", kycController.getAllkyc.bind());
 
-router.get('/getAllKycDetail',kycController.getAllkyc.bind());
+//getKycDetailById
+router.get("/getKycDetailById/:id", kycController.getKycById.bind());
 
-// 
-router.get('/getKycDetailById/:id',kycController.getKycById.bind())
-
-// update kyc approval 
-
-router.put('/successKyc/:id',kycController.UpdateSuccessKyc.bind())
+// update kyc approval
+router.put("/successKyc/:id", kycController.UpdateSuccessKyc.bind());
 // reject kyc approval
+router.put("/rejectKyc/:id", kycController.rejectKyc.bind());
+//  bank details
+router.post("/insertBankDetails/:user_id",bankcontroller.insertDetails.bind())
 
-router.put('/rejectKyc/:id',kycController.rejectKyc.bind())
+// delete bank details successfully
+router.delete("/deletBankeData/:user_id",bankcontroller.deleteBankDetails.bind());
+
+//get bank details by id
+router.get("/getBankDetailsById/:user_id",bankcontroller.getBankDetailsByID.bind());
+
+//  get all details
+router.get("/getAllBankDetails",bankcontroller.getAllBankDetails.bind());
+
+// update
+router.put("/updateBankDetails/:user_id", bankcontroller.updateDetails.bind());
 
 
 
