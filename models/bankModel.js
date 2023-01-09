@@ -35,14 +35,14 @@ class bankModel {
 
   getBankDetails = async (user_id) => {
     let sql = `SELECT Bankdetail.user_id,Bankdetail.bank_account_holder_name,
-    Bankdetail.branchName,Bankdetail.AccountNumber,Bankdetail.ifsc_code,Bankdetail.panCardno,users.first_name FROM Bankdetail  LEFT JOIN users ON Bankdetail.user_id=users.id where user_id = '${user_id}'`;
+    Bankdetail.branchName,Bankdetail.AccountNumber,Bankdetail.ifsc_code,Bankdetail.panCardno,users.first_name,Account_Type.AccountName FROM Bankdetail  LEFT JOIN users ON Bankdetail.user_id=users.id LEFT JOIN Account_Type ON Bankdetail.accountType =Account_Type.id where user_id = '${user_id}'`;
 
     const [result, fields] = await promisePool.query(sql);
 
     return result;
   };
   getAllDetails = async () => {
-    let sql = `SELECT Bankdetail.user_id,Bankdetail.bank_account_holder_name, Bankdetail.branchName,Bankdetail.AccountNumber,Bankdetail.ifsc_code,Bankdetail.panCardno,users.first_name FROM Bankdetail  LEFT JOIN users ON Bankdetail.user_id=users.id`;
+    let sql = `SELECT Bankdetail.user_id,Bankdetail.bank_account_holder_name, Bankdetail.branchName,Bankdetail.AccountNumber,Bankdetail.ifsc_code,Bankdetail.panCardno,users.first_name ,Account_Type.AccountName FROM Bankdetail  LEFT JOIN users ON Bankdetail.user_id=users.id LEFT JOIN Account_Type ON Bankdetail.accountType =Account_Type.id`;
     const [result, fields] = await promisePool.query(sql);
 
     return result;
