@@ -13,8 +13,8 @@ const promisePool = pool.promise();
 
 class bankModel {
   inserBankDetails = async (data, user_id) => {
-    let sql = `INSERT INTO Bankdetail(user_id,bank_account_holder_name,branchName,AccountNumber,ifsc_code,panCardno)VALUES('${user_id}',
-        '${data.bank_account_holder_name}','${data.branchName}','${data.AccountNumber}','${data.ifsc_code}','${data.panCardno}')`;
+    let sql = `INSERT INTO Bankdetail(user_id,bank_account_holder_name,branchName,AccountNumber,ifsc_code,panCardno,	accountType,GSTImage,cancelledChequeImage,	bankStatementImage)VALUES('${user_id}',
+        '${data.bank_account_holder_name}','${data.branchName}','${data.AccountNumber}','${data.ifsc_code}','${data.panCardno}','${data.accountType}','${data.GSTImage}','${data.cancelledChequeImage}','${data.bankStatementImage}')`;
     const [result, fields] = await promisePool.query(sql);
 
     return result;

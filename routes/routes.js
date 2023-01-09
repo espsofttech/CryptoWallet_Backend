@@ -54,7 +54,7 @@ let storage = multer.diskStorage({
   },
 });
 let upload = multer({ storage: storage });
-let profileUpload = upload.fields([{ name: "image", maxCount: 1 }]);
+let profileUpload = upload.fields([{ name: "image", maxCount: 3 }]);
 
 //  test--------
 router.get("/testme", function (req, res) {
@@ -76,8 +76,10 @@ const identitycontroller = require("../controllers/identity.controller");
 const kycController = require("../controllers/kycController");
 
 // bank controller
-const bankcontroller = require("../controllers/bankcontroller")
+const bankcontroller = require("../controllers/bankcontroller");
 
+// accountcontroller
+const accountcontroller = require("../controllers/accountType.controller");
 // all schema
 const {
   registerUserSchema,
@@ -166,24 +168,39 @@ router.put("/successKyc/:id", kycController.UpdateSuccessKyc.bind());
 // reject kyc approval
 router.put("/rejectKyc/:id", kycController.rejectKyc.bind());
 //  bank details
-router.post("/insertBankDetails/:user_id",bankcontroller.insertDetails.bind())
+router.post("/insertBankDetails/:user_id", profileUpload,bankcontroller.insertDetails.bind());
 
 // delete bank details successfully
-router.delete("/deletBankeData/:user_id",bankcontroller.deleteBankDetails.bind());
+router.delete(
+  "/deletBankeData/:user_id",
+  bankcontroller.deleteBankDetails.bind()
+);
 
 //get bank details by id
-router.get("/getBankDetailsById/:user_id",bankcontroller.getBankDetailsByID.bind());
+router.get(
+  "/getBankDetailsById/:user_id",
+  bankcontroller.getBankDetailsByID.bind()
+);
 
 //  get all details
-router.get("/getAllBankDetails",bankcontroller.getAllBankDetails.bind());
+router.get("/getAllBankDetails", bankcontroller.getAllBankDetails.bind());
 
 // update
 router.put("/updateBankDetails/:user_id", bankcontroller.updateDetails.bind());
 
+// accountType
+router.post("/accountType", accountcontroller.createAccountType.bind());
+// delete acc details
+router.delete(
+  "/deleteAccountData/:id",
+  accountcontroller.deleteAccountData.bind()
+);
 
-
-
-
+// get all data
+router.get(
+  "/getAllAccountDetails",
+  accountcontroller.getAllAccountDetails.bind()
+);
 
 function ensureWebToken(req, res, next) {
   const x_access_token = req.headers["authorization"];
