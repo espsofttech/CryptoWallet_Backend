@@ -80,6 +80,11 @@ const bankcontroller = require("../controllers/bankcontroller");
 
 // accountcontroller
 const accountcontroller = require("../controllers/accountType.controller");
+
+// 
+const FAQcontroller = require("../controllers/FAQcontroller")
+const supportcontroller = require("../controllers/supportcontroller")
+const webController = require("../controllers/webContentcontroller")
 // all schema
 const {
   registerUserSchema,
@@ -195,6 +200,23 @@ router.get(
   "/getAllAccountDetails",
   accountcontroller.getAllAccountDetails.bind()
 );
+
+// support 
+router.post("/insertsupportDetails",supportcontroller.insertsupportDetails.bind()); router.get("/getsupportDetails",supportcontroller.getsupportDetails.bind());
+
+// faq
+router.post("/insertfaqDetails",FAQcontroller.insertfaqDetails.bind());
+router.delete("/deletefaqDetails/:id",FAQcontroller.deletefaqDetails.bind());
+router.get("/getfaqDetails",FAQcontroller.getfaqDetails.bind());
+router.put("/updatefaqDetails/:id",FAQcontroller.updatefaqDetails.bind());
+
+// web content
+ router.post("/insertDetails",webController.insertDetails.bind());
+ router.delete("/deleteDetails/:id",webController.deleteDetails.bind());
+ router.get("/getDetails",webController.getDetails.bind());
+ router.put("/updateDetails/:id",webController.updateDetails.bind());
+
+
 
 function ensureWebToken(req, res, next) {
   const x_access_token = req.headers["authorization"];
