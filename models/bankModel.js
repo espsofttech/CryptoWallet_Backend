@@ -13,8 +13,8 @@ const promisePool = pool.promise();
 
 class bankModel {
   inserBankDetails = async (data, user_id) => {
-    let sql = `INSERT INTO Bankdetail(user_id,bank_account_holder_name,branchName,AccountNumber,ifsc_code,panCardno)VALUES('${user_id}',
-        '${data.bank_account_holder_name}','${data.branchName}','${data.AccountNumber}','${data.ifsc_code}','${data.panCardno}')`;
+    let sql = `INSERT INTO Bankdetail(user_id,bank_account_holder_name,branchName,AccountNumber,ifsc_code,panCardno,	accountType,GSTImage,cancelledChequeImage,	bankStatementImage)VALUES('${user_id}',
+        '${data.bank_account_holder_name}','${data.branchName}','${data.AccountNumber}','${data.ifsc_code}','${data.panCardno}','${data.accountType}','${data.GSTImage}','${data.cancelledChequeImage}','${data.bankStatementImage}')`;
     const [result, fields] = await promisePool.query(sql);
 
     return result;
@@ -35,14 +35,14 @@ class bankModel {
 
   getBankDetails = async (user_id) => {
     let sql = `SELECT Bankdetail.user_id,Bankdetail.bank_account_holder_name,
-    Bankdetail.branchName,Bankdetail.AccountNumber,Bankdetail.ifsc_code,Bankdetail.panCardno,users.first_name FROM Bankdetail  LEFT JOIN users ON Bankdetail.user_id=users.id where user_id = '${user_id}'`;
+    Bankdetail.branchName,Bankdetail.AccountNumber,Bankdetail.ifsc_code,Bankdetail.panCardno,users.first_name,Account_Type.AccountName FROM Bankdetail  LEFT JOIN users ON Bankdetail.user_id=users.id LEFT JOIN Account_Type ON Bankdetail.accountType =Account_Type.id where user_id = '${user_id}'`;
 
     const [result, fields] = await promisePool.query(sql);
 
     return result;
   };
   getAllDetails = async () => {
-    let sql = `SELECT Bankdetail.user_id,Bankdetail.bank_account_holder_name, Bankdetail.branchName,Bankdetail.AccountNumber,Bankdetail.ifsc_code,Bankdetail.panCardno,users.first_name FROM Bankdetail  LEFT JOIN users ON Bankdetail.user_id=users.id`;
+    let sql = `SELECT Bankdetail.user_id,Bankdetail.bank_account_holder_name, Bankdetail.branchName,Bankdetail.AccountNumber,Bankdetail.ifsc_code,Bankdetail.panCardno,users.first_name ,Account_Type.AccountName FROM Bankdetail  LEFT JOIN users ON Bankdetail.user_id=users.id LEFT JOIN Account_Type ON Bankdetail.accountType =Account_Type.id`;
     const [result, fields] = await promisePool.query(sql);
 
     return result;
@@ -54,7 +54,11 @@ class bankModel {
     branchName='${data.branchName}',
     AccountNumber = '${data.AccountNumber}',
     ifsc_code ='${data.ifsc_code}',
-    panCardno='${data.panCardno}'
+    panCardno='${data.panCardno}',
+    accountType='${data.accountType}',
+    GSTImage='${data.GSTImage}',
+    cancelledChequeImage='${data.cancelledChequeImage}',
+    bankStatementImage='${data.bankStatementImage}'
     WHERE user_id='${user_id}'`
     const [result, fields] = await promisePool.query(sql);
 

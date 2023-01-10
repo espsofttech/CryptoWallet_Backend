@@ -54,11 +54,11 @@ let storage = multer.diskStorage({
   },
 });
 let upload = multer({ storage: storage });
-let profileUpload = upload.fields([{ name: "image", maxCount: 1 }]);
-
+let profileUpload = upload.fields([{ name: "image", maxCount: 3 }]);
+let bankUpload = upload.fields([{ name: "GSTimage", maxCount: 10 },{ name: "cancelledChequeImage", maxCount: 10 },{ name: "bankStatementImage", maxCount: 10 }]);
 //  test--------
 router.get("/testme", function (req, res) {
-  try {
+  try { 
     return res.send({ status: true, msg: "successfull" });
   } catch (err) {
     return res.send({ status: false, error: err.message });
@@ -76,8 +76,15 @@ const identitycontroller = require("../controllers/identity.controller");
 const kycController = require("../controllers/kycController");
 
 // bank controller
-const bankcontroller = require("../controllers/bankcontroller")
+const bankcontroller = require("../controllers/bankcontroller");
 
+// accountcontroller
+const accountcontroller = require("../controllers/accountType.controller");
+
+// 
+const FAQcontroller = require("../controllers/FAQcontroller")
+const supportcontroller = require("../controllers/supportcontroller")
+const webController = require("../controllers/webContentcontroller")
 // all schema
 const {
   registerUserSchema,
@@ -166,22 +173,48 @@ router.put("/successKyc/:id", kycController.UpdateSuccessKyc.bind());
 // reject kyc approval
 router.put("/rejectKyc/:id", kycController.rejectKyc.bind());
 //  bank details
-router.post("/insertBankDetails/:user_id",bankcontroller.insertDetails.bind())
+router.post("/insertBankDetails/:user_id", bankUpload,bankcontroller.insertDetails.bind());
 
-// delete bank details successfully
-router.delete("/deletBankeData/:user_id",bankcontroller.deleteBankDetails.bind());
+router.delete(
+  "/deletBankeData/:user_id",
+  bankcontroller.deleteBankDetails.bind()
+);
 
-//get bank details by id
-router.get("/getBankDetailsById/:user_id",bankcontroller.getBankDetailsByID.bind());
+router.get(
+  "/getBankDetailsById/:user_id",
+  bankcontroller.getBankDetailsByID.bind()
+);
 
-//  get all details
-router.get("/getAllBankDetails",bankcontroller.getAllBankDetails.bind());
+router.get("/getAllBankDetails", bankcontroller.getAllBankDetails.bind());
+router.put("/updateBankDetails/:user_id",bankUpload,bankcontroller.updateDetails.bind());
 
-// update
-router.put("/updateBankDetails/:user_id", bankcontroller.updateDetails.bind());
+// accountType
+router.post("/accountType", accountcontroller.createAccountType.bind());
+// delete acc details
+router.delete(
+  "/deleteAccountData/:id",
+  accountcontroller.deleteAccountData.bind()
+);
+// get all data
+router.get(
+  "/getAllAccountDetails",
+  accountcontroller.getAllAccountDetails.bind()
+);
 
+// support 
+router.post("/insertsupportDetails",supportcontroller.insertsupportDetails.bind()); router.get("/getsupportDetails",supportcontroller.getsupportDetails.bind());
 
+// faq
+router.post("/insertfaqDetails",FAQcontroller.insertfaqDetails.bind());
+router.delete("/deletefaqDetails/:id",FAQcontroller.deletefaqDetails.bind());
+router.get("/getfaqDetails",FAQcontroller.getfaqDetails.bind());
+router.put("/updatefaqDetails/:id",FAQcontroller.updatefaqDetails.bind());
 
+// web content
+ router.post("/insertDetails",webController.insertDetails.bind());
+ router.delete("/deleteDetails/:id",webController.deleteDetails.bind());
+ router.get("/getDetails",webController.getDetails.bind());
+ router.put("/updateDetails/:id",webController.updateDetails.bind());
 
 
 
