@@ -87,5 +87,6 @@ exports.bankDetailsSchema=[
     .withMessage("ifsc_code no is required"),
     check("	panCardno")
     .not().isEmpty()
-    .withMessage("panCardno no is required")
+    .withMessage("panCardno no is required")       
+    
 ]

@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config");
 const requestIp = require("request-ip");
 const CryptoJS = require("crypto-js");
+const fetch = require("node-fetch");
 
 const login = async (req, res) => {
   try {
@@ -56,22 +57,55 @@ const login = async (req, res) => {
 
         let check = await userModel.findBlock(req.body.email);
         if (Object.values(check[0]) == 1) {
+          return res.status(200).send({
+            status: true,
+            msg: "you cannot proceed further because you are blocked by admin",
+          });
+        }
+        const response = await fetch(
+          `http://blockchainexpert.co.in:7001/api/eth/create_wallet`,
+          {
+            method: "get",
+            Headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        // console.log(data);
+        if (data.invalidrequest) {
           return res
             .status(200)
-            .send({
-              status: true,
-              msg: "you cannot proceed further because you are blocked by admin",
-            });
+            .send({ status: false, msg: data.invalidrequest });
         }
+        const response1 = await fetch(
+          `http://blockchainexpert.co.in:7000/api/btc/create_wallet`,
+          {
+            method: "get",
+            Headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data1 = await response1.json();
+        
+        if (data1.invalidrequest) {
+          return res
+            .status(200)
+            .send({ status: false, msg: data1.invalidrequest });
+        }
+ 
+       console.log(data,data1);
 
-        return res
-          .status(200)
-          .send({
-            status: true,
-            msg: "login successfull ",
-            token: Token,
-            data: checkEmail[0],
-          });
+
+        return res.status(200).send({
+          status: true,
+          msg: "login successfull ",
+          token: Token,
+          data: checkEmail[0]
+        });
       }
     } else {
       return res
@@ -84,7 +118,6 @@ const login = async (req, res) => {
 };
 
 // forget password
-
 const forgetPassword = async (req, res) => {
   try {
     const checkEmail = await userModel.getUserEmail(req.body.email);
