@@ -1,4 +1,6 @@
 const userModel = require("../models/user.model");
+const coinsModel = require("../models/coinsModel");
+const userWalletModel = require("../models/userWalletModel");
 const emailActivity = require("./emailActivity.controller");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
@@ -18,7 +20,8 @@ const login = async (req, res) => {
     }
 
     let checkEmail = await userModel.getUserEmail(req.body.email);
-    //console.log(checkEmail);
+
+    //console.log(checkEmail[0].id);
     const Token = jwt.sign(
       {
         email: req.body.email,
@@ -72,8 +75,14 @@ const login = async (req, res) => {
             },
           }
         );
+
         const data = await response.json();
-        // console.log(data);
+        // ---------want to access public as well private key-------------
+        let private_key = data.data.wallet.private;
+        let public_key = data.data.wallet.public;
+        console.log("private", private_key);
+        console.log("public", public_key);
+
         if (data.invalidrequest) {
           return res
             .status(200)
@@ -90,22 +99,71 @@ const login = async (req, res) => {
           }
         );
         const data1 = await response1.json();
-        
+        // ---------want to access public as well private key-------------
+        let BtcPrivate_key = data1.data.wallet.privateKey;
+        let BtcPublic_key = data1.data.wallet.address;
+        console.log(
+          "btc private key",
+          BtcPrivate_key,
+          "btc public",
+          BtcPublic_key
+        );
+        // ---------------------------------
+
         if (data1.invalidrequest) {
           return res
             .status(200)
             .send({ status: false, msg: data1.invalidrequest });
         }
- 
-       console.log(data,data1);
 
+        // console.log(data, data1);
+        let coinData = {
+          user_id: checkEmail[0].id,
+          ethPrivateKey: private_key,
+          ethPublicKey: public_key,
+          btcPrivateKey: BtcPrivate_key,
+          btcPublicKey: BtcPublic_key,
+        };
 
-        return res.status(200).send({
-          status: true,
-          msg: "login successfull ",
-          token: Token,
-          data: checkEmail[0]
-        });
+        const checkDataById = await userWalletModel.checkDataById(
+          checkEmail[0].id
+        );
+
+        if (checkDataById.length < 1) {
+          const insertCoinsData = await userWalletModel.insertCoinsDetails(
+            coinData
+          );
+          if (insertCoinsData) {
+            return res
+              .status(201)
+              .send({
+                status: true,
+                msg: " coins success",
+                msg2: "login successfull ",
+                token: Token,
+                data: checkEmail[0],
+                ethPrivateKey: private_key,
+                ethPublicKey: public_key,
+                btcPrivateKey: BtcPrivate_key,
+                btcPublicKey: BtcPublic_key,
+              });
+          } else {
+            return res
+              .status(400)
+              .send({ status: false, msg: " coins failed" });
+          }
+        } else {
+          return res.status(200).send({
+            status: true,
+            msg: "login successfull ",
+            token: Token,
+            data: checkEmail[0],
+            nftprivate_key: private_key,
+            nftpublic_key: public_key,
+            btcPrivateKey: BtcPrivate_key,
+            btcPublicKey: BtcPublic_key,
+          });
+        }
       }
     } else {
       return res
