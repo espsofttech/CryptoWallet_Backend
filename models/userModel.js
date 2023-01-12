@@ -12,6 +12,7 @@ const pool = mysql.createPool({
 const promisePool = pool.promise();
 
 class userModel {
+  
   getUserEmail = async (email) => {
     let sql = `SELECT * FROM users where email ='${email}'`;
     const [result, fields] = await promisePool.query(sql);

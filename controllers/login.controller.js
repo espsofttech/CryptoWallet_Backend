@@ -1,4 +1,4 @@
-const userModel = require("../models/user.model");
+const userModel = require("../models/userModel");
 const coinsModel = require("../models/coinsModel");
 const userWalletModel = require("../models/userWalletModel");
 const emailActivity = require("./emailActivity.controller");

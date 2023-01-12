@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const speakeasy = require("speakeasy");
 const QRCode = require("qrcode");
 
-const userModel = require("../models/user.model");
+const userModel = require("../models/userModel");
 
 const registerUser = async (req, res) => {
   try {
