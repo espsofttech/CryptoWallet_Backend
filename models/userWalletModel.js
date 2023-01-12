@@ -12,16 +12,23 @@ const pool = mysql.createPool({
 const promisePool = pool.promise();
 
 class userWalletModel {
-  insertCoinsDetails = async (data) => {
-    let sql = `INSERT INTO userWallet (user_id,ethPrivateKey,ethPublicKey,btcPrivateKey,btcPublicKey) VALUES ('${data.user_id}','${data.ethPrivateKey}','${data.ethPublicKey}','${data.btcPrivateKey}','${data.btcPublicKey}')`;
+  insertDetails = async (data) => {
+    let sql = `INSERT INTO userWallet (user_id,coin_id,balance,privateKey,publicKey) VALUES ('${data.user_id}','${data.coin_id}','${data.balance}','${data.privateKey}','${data.publicKey}')`;
     const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
+  checkDataById = async (user_id,coin_id) => {
+    let sql = `SELECT * FROM userWallet WHERE  user_id='${user_id}' and coin_id = '${coin_id}'`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
+  updateUserWallet = async (data,user_id,coin_id) => {
+  
+    let sql = `UPDATE userWallet SET private_key='${data.private_key}', public_key='${data.public_key}' where user_id = ${user_id} and coin_id = ${coin_id}`;
+    const [result, fields] = await promisePool.query(sql);
+    
+    return result;
+}
 
-    return result;
-  };
-  checkDataById = async (user_id) => {
-    let sql = `SELECT * FROM userWallet WHERE  user_id='${user_id}'`;
-    const [result, fields] = await promisePool.query(sql);
-    return result;
-  };
 }
 module.exports = new userWalletModel();

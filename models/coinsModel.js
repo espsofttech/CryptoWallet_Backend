@@ -18,8 +18,13 @@ class coinsModel{
     
         return result;
   }
+getCoinsDetails= async ()=>{
+let sql = `SELECT * FROM coins`;
+const [result, fields] = await promisePool.query(sql);
+return result;
 
 
 
+}
 }
 module.exports= new coinsModel()
