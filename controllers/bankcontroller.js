@@ -85,7 +85,7 @@ const getBankDetailsByID = async (req, res) => {
       if (getBankDetails) {
         return res
           .status(200)
-          .send({ status: true, msg: "successfully", data: getBankDetails });
+          .send({ status: true, msg: "successfully", data: getBankDetails[0] });
       } else {
         return res
           .status(400)
@@ -119,8 +119,10 @@ const getAllBankDetails = async (req, res) => {
 };
 
 const updateDetails = async (req, res) => {
+  console.log('updateDetails')
   try {
     let user_id = req.params.user_id;
+    console.log('user_id', user_id)
     const checkId = await bankModel.checkUserByid(user_id);
     let GSTimage = !req.files["GSTimage"]
       ? null
@@ -131,35 +133,41 @@ const updateDetails = async (req, res) => {
     let bankStatementImage = !req.files["bankStatementImage"]
       ? null
       : req.files["bankStatementImage"][0].filename;
+    console.log('checkId:', checkId.length)
+    let data = {
+      user_id: req.body.user_id,
+      bank_name: req.body.bank_name,
+      bank_account_holder_name: req.body.bank_account_holder_name,
+      branchName: req.body.branchName,
+      AccountNumber: req.body.AccountNumber,
+      ifsc_code: req.body.ifsc_code,
+      panCardno: req.body.panCardno,
+      accountType: req.body.accountType,
+      GSTImage: GSTimage,
+      cancelledChequeImage: cancelledChequeImage,
+      bankStatementImage: bankStatementImage
+    };
     if (checkId.length > 0) {
-      let data = {
-        user_id: req.body.user_id,
-        bank_account_holder_name: req.body.bank_account_holder_name,
-        branchName: req.body.branchName,
-        AccountNumber: req.body.AccountNumber,
-        ifsc_code: req.body.ifsc_code,
-        panCardno: req.body.panCardno,
-        accountType: req.body.accountType,
-        GSTImage: GSTimage,
-        cancelledChequeImage: cancelledChequeImage,
-        bankStatementImage: bankStatementImage
-      };
+
       const update = await bankModel.updateDetails(data, user_id);
       if (update) {
         return res
           .status(201)
           .send({ status: true, msg: " data updated successfully" });
       } else {
+
         return res
           .status(400)
           .send({ status: false, msg: "something went wrong" });
       }
     } else {
+      const insert = await bankModel.inserBankDetails(data, user_id);
       return res
-        .status(404)
-        .send({ status: false, msg: " no user found by this id" });
+        .status(201)
+        .send({ status: true, msg: " data updated successfully" });
     }
   } catch (err) {
+    console.log(err)
     return res.status(500).send({ status: false, error: err.message });
   }
 };

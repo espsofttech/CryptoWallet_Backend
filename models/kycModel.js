@@ -48,5 +48,15 @@ class kycModel {
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
+
+  getKycDataById = async (id) => {
+    let sql = `select * from KYC where id='${id}'`
+  
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  
+  }
 }
+
+
 module.exports = new kycModel();

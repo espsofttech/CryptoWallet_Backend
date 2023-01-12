@@ -54,7 +54,10 @@ let storage = multer.diskStorage({
   },
 });
 let upload = multer({ storage: storage });
-let profileUpload = upload.fields([{ name: "image", maxCount: 3 }]);
+let profileUpload = upload.fields([{ name: "image", maxCount: 10 }]);
+let profileUploadData = upload.fields([{ name: "image", maxCount: 10 }]);
+
+
 let bankUpload = upload.fields([{ name: "GSTimage", maxCount: 10 },{ name: "cancelledChequeImage", maxCount: 10 },{ name: "bankStatementImage", maxCount: 10 }]);
 //  test--------
 router.get("/testme", function (req, res) {
@@ -157,8 +160,8 @@ router.get("/getAllIdentity", identitycontroller.getAllData.bind());
 //   kyc apis
 
 router.post(
-  "/InsertKycData/:id",
-  profileUpload,
+  "/InsertKycData",
+  profileUploadData,
   kycController.insertData.bind()
 );
 
