@@ -122,44 +122,54 @@ const login = async (req, res) => {
         }
 
         // console.log(data, data1);
-
+        // coinList.forEach(coin => {
+        //  console.log(coin.symbol)
+        // });
 
         const coin = await coinsModel.getCoinsDetails();
-        console.log('coin:', coin)
+        //  console.log(coin, coin.length)
+        for (let i = 0; i < coin.length; i++) {
+          // coin.forEach(function(item) {
+          //console.log(item)
+          // for(var i in coin){
 
-        for (let i in coin) {
+          console.log(coin[i]);
+
+          //  console.log(Array.isArray(coin),coin[3])
+          console.log(Array.isArray(coin), typeof coin);
           const checkDataById = await userWalletModel.checkDataById(
             checkEmail[0].id,
             coin[i].id
           );
-          console.log('checkDataById.length:', checkDataById.length)
+          console.log("checkDataById.length:", checkDataById.length);
+
           if (checkDataById.length == 0) {
             let wallet = {};
-            console.log('coin[i].symbol:', coin[i].symbol)
+
             if (["BTC", "ETH", "USDT", "USDC"].includes(coin[i].symbol)) {
               wallet = await web3fun(coin[i].symbol);
             } else {
               wallet = {
-                privateKey: '',
-                public_key: '',
+                privateKey: "",
+                public_key: "",
               };
-              console.log('wallet:', wallet)
             }
 
-
             if (wallet) {
-              console.log('aman')
               var userwallet = {
                 user_id: checkEmail[0].id,
                 coin_id: coin[i].id,
                 balance: 0,
-                privateKey: await encriptedKey(wallet.privateKey, "CryptoWallet123#"),
-                publicKey: wallet.publicKey
-              }
+                privateKey: await encriptedKey(
+                  wallet.privateKey,
+                  "CryptoWallet123#"
+                ),
+                publicKey: wallet.publicKey,
+              };
             }
             let create = await userWalletModel.insertDetails(userwallet);
-
           }
+
           // if(checkDataById.length>0 && (  checkDataById[0].publicKey == null || !checkDataById[0].publicKey)){
           //   let wallet = {};
           //   if(["BTC","ETH","USDT","USDC"].includes(coin[i].symbol)){
@@ -189,7 +199,6 @@ const login = async (req, res) => {
             msg: " coins success",
             msg2: "login successfull ",
             token: Token,
-
           });
           // }
         }
@@ -234,15 +243,14 @@ const login = async (req, res) => {
         .send({ status: false, msg: "we dont have user with this email" });
     }
   } catch (err) {
-    console.log('err', err);
+    console.log("err", err);
     return res.status(500).send({ status: false, error: err.message });
   }
 };
 
 async function web3fun(symbol) {
-  console.log('symbol:', symbol)
+  console.log(web3fun);
   if (symbol == "BTC") {
-
     const bitCoinhdWallet = await axios.get(
       "http://blockchainexpert.co.in:7000/api/btc/create_wallet"
     );
@@ -257,7 +265,7 @@ async function web3fun(symbol) {
       publicKey: bitCoinhdWallet.data.data.wallet.address,
     };
   } else if (symbol == "ETH") {
-    console.log('1111111111111111111')
+    console.log("1111111111111111111");
     const ETHwallet = await axios.get(
       "http://blockchainexpert.co.in:7001/api/eth/create_wallet"
     );
@@ -310,7 +318,6 @@ async function web3fun(symbol) {
   // }else if (symbol == "USD") {
   //   return { privateKey: "", public_key: "" };
   // }
-
 }
 async function encriptedKey(pvkey, hash) {
   var private_key = pvkey;
@@ -489,7 +496,7 @@ const ResetPassword = async (req, res) => {
           hash,
           decodedToken.email
         );
-        console.log('decodedToken.email:', decodedToken.email)
+        console.log("decodedToken.email:", decodedToken.email);
         if (ResetPassword) {
           return res
             .status(201)

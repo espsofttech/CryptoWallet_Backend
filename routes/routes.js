@@ -59,6 +59,7 @@ let profileUploadData = upload.fields([{ name: "image", maxCount: 10 }]);
 
 
 let bankUpload = upload.fields([{ name: "GSTimage", maxCount: 10 },{ name: "cancelledChequeImage", maxCount: 10 },{ name: "bankStatementImage", maxCount: 10 }]);
+let insertFiat = upload.fields([{ name: "upload_file", maxCount: 10 }]);
 //  test--------
 router.get("/testme", function (req, res) {
   try { 
@@ -88,6 +89,8 @@ const accountcontroller = require("../controllers/accountType.controller");
 const FAQcontroller = require("../controllers/FAQcontroller")
 const supportcontroller = require("../controllers/supportcontroller")
 const webController = require("../controllers/webContentcontroller")
+
+const depositController = require("../controllers/depositController")
 // all schema
 const {
   registerUserSchema,
@@ -218,6 +221,14 @@ router.put("/updatefaqDetails/:id",FAQcontroller.updatefaqDetails.bind());
  router.delete("/deleteDetails/:id",webController.deleteDetails.bind());
  router.get("/getDetails",webController.getDetails.bind());
  router.put("/updateDetails/:id",webController.updateDetails.bind());
+
+
+//  deposit fiat 
+router.post("/depositFiat",insertFiat,depositController.depositFiat.bind());
+
+router.get("/getAllfiatDetails",depositController.getAllfiatDetails.bind());
+// update status
+router.put("/updateStatusDetails",depositController.updateStatusDetails.bind());
 
 
 
