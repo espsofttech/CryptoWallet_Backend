@@ -2,7 +2,6 @@ const kycModel = require("../models/kycModel");
 const { validationResult } = require("express-validator");
 
 const insertData = async (req, res) => {
-  console.log('req:', req)
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -24,21 +23,25 @@ const insertData = async (req, res) => {
       doc_no: req.body.doc_no,
       Address: req.body.Address,
     };
-    console.log('data:', data)
-    // const kycDetail = await kycModel.getKycDataById(req.body.user_id)
-    // console.log('kycDetail:', kycDetail);
-    // return;
-    const insert = await kycModel.insertData(data);
+    const kycDetail = await kycModel.getKycDataById(req.body.user_id)
+    let insert = ''
+    if (kycDetail.length > 0) {
+      insert = await kycModel.updateKycData(data);
+    }
+    else {
+      insert = await kycModel.insertData(data);
+    }
     if (insert) {
       return res
         .status(201)
-        .send({ status: true, msg: "data inserted successfully" });
+        .send({ status: true, msg: "KYC Updated!" });
     } else {
       return res
         .status(400)
         .send({ status: false, msg: "something went wrong" });
     }
   } catch (err) {
+    console.log(err)
     return res.status(500).send({ status: false, error: err.message });
   }
 };
