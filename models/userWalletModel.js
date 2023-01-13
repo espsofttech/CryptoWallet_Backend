@@ -29,6 +29,13 @@ class userWalletModel {
     
     return result;
 }
+updateBalance=async(balance,user_id)=>{
+  //  console.log(balance)
+  let sql = `UPDATE userWallet SET balance='${balance}'where user_id='${user_id}'`;
+  const [result, fields] = await promisePool.query(sql);
+   //console.log(sql,result)
+  return result;
+}
 
 }
 module.exports = new userWalletModel();
