@@ -50,7 +50,7 @@ const updateUserById = async (req, res) => {
     if (image) {
       req.body.image = image;
     } else {
-      req.body.image = req.body.old_image;
+      req.body.image = req.body.old_profile_pic;
     }
 
     let id = req.params.id;

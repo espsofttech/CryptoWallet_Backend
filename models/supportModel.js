@@ -18,7 +18,7 @@ class supportModel {
          return result;
       };
       getDetails=async()=>{
-        let sql = `SELECT * FROM support`;
+        let sql = `SELECT * FROM support ORDER BY id DESC`;
         const [result, fields] = await promisePool.query(sql);
         return result;
       }

@@ -42,7 +42,7 @@ class userModel {
     return result;
   };
   getAllDetail = async () => {
-    let sql = `SELECT * FROM users`;
+    let sql = `SELECT * FROM users ORDER BY id desc`;
     const [result, fields] = await promisePool.query(sql);
     return result;
   };

@@ -58,7 +58,7 @@ let profileUpload = upload.fields([{ name: "image", maxCount: 10 }]);
 let profileUploadData = upload.fields([{ name: "image", maxCount: 10 }]);
 
 
-let bankUpload = upload.fields([{ name: "GSTimage", maxCount: 10 },{ name: "cancelledChequeImage", maxCount: 10 },{ name: "bankStatementImage", maxCount: 10 }]);
+let bankUpload = upload.fields([{ name: "GSTImage", maxCount: 10 },{ name: "cancelledChequeImage", maxCount: 10 },{ name: "bankStatementImage", maxCount: 10 }]);
 let insertFiat = upload.fields([{ name: "upload_file", maxCount: 10 }]);
 //  test--------
 router.get("/testme", function (req, res) {

@@ -1,5 +1,5 @@
 module.exports = { 
-    mysqlHost: "3.108.64.60",
+    mysqlHost: "13.233.12.75",
       user: "esp",
       password: 'Espsoft123#',
       database: "crypto-wallet",

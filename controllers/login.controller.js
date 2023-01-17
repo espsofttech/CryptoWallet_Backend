@@ -69,12 +69,12 @@ const login = async (req, res) => {
           });
         }
 
-        if(checkEmail[0].id == 1){
-          return res
-          .status(400)
-          .send({ status: false, msg: "we dont have user with this email" });
+        // if(checkEmail[0].id == 1){
+        //   return res
+        //   .status(400)
+        //   .send({ status: false, msg: "we dont have user with this email" });
       
-        }
+        // }
 
         const coin = await coinsModel.getCoinsDetails();
 
