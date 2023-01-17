@@ -78,29 +78,28 @@ const updateStatusDetails = async (req, res) => {
       if (checkDetailsBycoin_id.length > 0) {
         let statusData = req.body.status;
         if (statusData == 1) {
+          const checkUserWalletById = await userWalletModel.getdetailById(
+            user_id
+          );
+          if (checkUserWalletById.length > 0) {
+            const updateStatus = await depositModel.updateStatus(user_id);
+            if (updateStatus) {
+              let balance = checkDetailsByuser_id[0].balance;
 
-         const checkUserWalletById = await userWalletModel.getdetailById(user_id)
-         if(checkUserWalletById.length>0){
-          const updateStatus = await depositModel.updateStatus(user_id);
-          if (updateStatus) {
-            let balance = checkDetailsByuser_id[0].balance;
+              const updateUserWallet = await userWalletModel.updateBalance(
+                balance,
+                user_id
+              );
 
-            const updateUserWallet = await userWalletModel.updateBalance(
-              balance,
-              user_id
-            );
-
-            if (updateUserWallet) {
-              return res
-                .status(201)
-                .send({
+              if (updateUserWallet) {
+                return res.status(201).send({
                   status: true,
                   msg: "balance updated and status approved",
                 });
-              }else{
+              } else {
                 return res
-          .status(404)
-          .send({ status: false, msg: "no details  found in user wallet by this id" });
+                  .status(404)
+                  .send({ status: false, msg: "something went wrong" });
               }
             } else {
               return res
@@ -109,8 +108,11 @@ const updateStatusDetails = async (req, res) => {
             }
           } else {
             return res
-              .status(400)
-              .send({ status: false, msg: "something went wrong" });
+              .status(404)
+              .send({
+                status: false,
+                msg: "no details found in user wallet by this id",
+              });
           }
         } else if (statusData == 2) {
           const rejectStatus = await depositModel.updateFiatStatus(user_id);
