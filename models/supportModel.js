@@ -26,6 +26,7 @@ class supportModel {
         let sql = `SELECT COUNT('id') FROM support`;
         const [result, fields] = await promisePool.query(sql);
         return result;
+       
       }
       
 }
