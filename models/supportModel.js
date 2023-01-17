@@ -22,5 +22,11 @@ class supportModel {
         const [result, fields] = await promisePool.query(sql);
         return result;
       }
+      getAllsubscriberList=async()=>{
+        let sql = `SELECT COUNT('id') FROM support`;
+        const [result, fields] = await promisePool.query(sql);
+        return result;
+      }
+      
 }
 module.exports=new supportModel()

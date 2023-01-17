@@ -91,6 +91,18 @@ WHERE id = '${id}'`;
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
+  getAllUsersList=async()=>{
+    let sql =`SELECT COUNT('id') FROM users`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+
+  }
+  getUserOfToday=async()=>{
+    let sql = `SELECT COUNT('id')FROM users
+     WHERE DATE(created_At) = CURDATE();`
+     const [result, fields] = await promisePool.query(sql);
+     return result;
+}
 }
 
 module.exports = new userModel();

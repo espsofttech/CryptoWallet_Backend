@@ -32,10 +32,7 @@ const exchange = async (req, res) => {
             amount
           );
           if (deductAmt) {
-            let updatWallet = await userWalletModel.Balancebyid(
-              user_id,
-              coinId,
-              buyamount
+            let updatWallet = await userWalletModel.Balancebyid(user_id,coinId,buyamount
             );
             if (updatWallet) {
               const insertIntoTransaction =
@@ -64,11 +61,7 @@ const exchange = async (req, res) => {
               .send({ status: false, msg: "something went wrong" });
           }
         } else if (type == 2) {
-          let sell = await userWalletModel.Balancebyid1(
-            user_id,
-            coinId,
-            buyamount
-          );
+          let sell = await userWalletModel.Balancebyid1(user_id,coinId,buyamount);
           if (sell) {
             let updatWallet = userWalletModel.updateBalancebyid1(
               user_id,
