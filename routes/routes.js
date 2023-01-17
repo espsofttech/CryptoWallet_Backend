@@ -73,6 +73,7 @@ router.get("/testme", function (req, res) {
 const registercontroller = require("../controllers/register.controller");
 const logincontroller = require("../controllers/login.controller");
 const usercontroller = require("../controllers/user.controller");
+const exchangeController = require("../controllers/exchangeController")
 
 // identity controller
 const identitycontroller = require("../controllers/identity.controller");
@@ -229,6 +230,8 @@ router.post("/depositFiat",insertFiat,depositController.depositFiat.bind());
 router.get("/getAllfiatDetails",depositController.getAllfiatDetails.bind());
 // update status
 router.put("/updateStatusDetails",depositController.updateStatusDetails.bind());
+// buy and sell exchange
+router.post("/exchange",exchangeController.exchange.bind());
 
 
 
