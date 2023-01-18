@@ -75,5 +75,10 @@ class userWalletModel {
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
+  withdrawBtc = async (data) => {
+let sql = `UPDATE userWallet SET balance=(balance-${data.amount}) WHERE user_id ='${data.user_id}'and coin_id ='${data.coin_id}'`
+const [result, fields] = await promisePool.query(sql);
+return result;
+  }
 }
 module.exports = new userWalletModel();

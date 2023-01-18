@@ -55,14 +55,20 @@ let storage = multer.diskStorage({
 });
 let upload = multer({ storage: storage });
 let profileUpload = upload.fields([{ name: "image", maxCount: 10 }]);
-let profileUploadData = upload.fields([{ name: "image", maxCount: 10 }]);
+// let profileUploadData = upload.fields([{ name: "image", maxCount: 10 }]);
 
 let bankUpload = upload.fields([
   { name: "GSTimage", maxCount: 10 },
   { name: "cancelledChequeImage", maxCount: 10 },
-  { name: "bankStatementImage", maxCount: 10 },
+  { name: "bankStatementImage", maxCount: 10 }
 ]);
 let insertFiat = upload.fields([{ name: "upload_file", maxCount: 10 }]);
+
+let Uploads = upload.fields([
+  {name: "image", maxCount: 10},
+  {name: "bankStatement", maxCount: 10}
+])
+
 //  test--------
 router.get("/testme", function (req, res) {
   try {
@@ -96,6 +102,7 @@ const webController = require("../controllers/webContentcontroller");
 
 const depositController = require("../controllers/depositController");
 const dashBoardController = require("../controllers/dashBoardController");
+const withdrawalcontroller = require("../controllers/withdrawalcontroller")
 // all schema
 const {
   registerUserSchema,
@@ -169,7 +176,7 @@ router.get("/getAllIdentity", identitycontroller.getAllData.bind());
 
 router.post(
   "/InsertKycData",
-  profileUploadData,
+  Uploads,
   kycController.insertData.bind()
 );
 
@@ -251,8 +258,16 @@ router.put(
 // buy and sell exchange
 router.post("/exchange", exchangeController.exchange.bind());
 
-//
+//dashBoardData
 router.get("/dashBoardData", dashBoardController.getdashBoardData.bind());
+
+// withdraw  btc
+router.post("/withdrawBtc",withdrawalcontroller.withdrawBtc.bind());
+// get details 
+router.get("/getWithdrawalDetails",withdrawalcontroller.getAllList.bind());
+
+//  update status
+router.put("/updatestatus",withdrawalcontroller.updateStatus.bind());
 
 function ensureWebToken(req, res, next) {
   const x_access_token = req.headers["authorization"];

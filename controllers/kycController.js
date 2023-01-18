@@ -13,6 +13,7 @@ const insertData = async (req, res) => {
     }
 
     let image = !req.files["image"] ? null : req.files["image"][0].filename;
+let bankStatement= !req.files["bankStatement"] ? null : req.files["bankStatement"][0].filename;
 
     let data = {
       user_id: req.body.user_id,
@@ -23,22 +24,29 @@ const insertData = async (req, res) => {
       image: image,
       doc_no: req.body.doc_no,
       Address: req.body.Address,
+      bankStatement:bankStatement,
+      phoneNo:req.body.phoneNo
+
     };
-    console.log("data:", data);
-    // const kycDetail = await kycModel.getKycDataById(req.body.user_id)
-    // console.log('kycDetail:', kycDetail);
-    // return;
-    const insert = await kycModel.insertData(data);
+    const kycDetail = await kycModel.getKycDataById(req.body.user_id)
+    let insert = ''
+    if (kycDetail.length > 0) {
+      insert = await kycModel.updateKycData(data);
+    }
+    else {
+      insert = await kycModel.insertData(data);
+    }
     if (insert) {
       return res
         .status(201)
-        .send({ status: true, msg: "data inserted successfully" });
+        .send({ status: true, msg: "KYC Updated!" });
     } else {
       return res
         .status(400)
         .send({ status: false, msg: "something went wrong" });
     }
   } catch (err) {
+    console.log(err)
     return res.status(500).send({ status: false, error: err.message });
   }
 };
