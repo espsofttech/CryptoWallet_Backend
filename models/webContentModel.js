@@ -13,39 +13,37 @@ const pool = mysql.createPool({
 const promisePool = pool.promise();
 
 class webContentModel {
-  
-    insertDetails= async (data) => {
-        let sql = `INSERT INTO webContent(Aboutus,	privacy_policy)VALUES('${data.Aboutus}','${data.privacy_policy}')`;
-        const [result, fields] = await promisePool.query(sql);
-         return result;
-      };
+  insertDetails = async (data) => {
+    let sql = `INSERT INTO webContent(Aboutus,	privacy_policy)VALUES('${data.Aboutus}','${data.privacy_policy}')`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
 
-      deleteDetails=async (id) => {
-        let sql = `DELETE FROM webContent WHERE id ='${id}'`;
-        const [result, fields] = await promisePool.query(sql);
-         return result;
-      };
+  deleteDetails = async (id) => {
+    let sql = `DELETE FROM webContent WHERE id ='${id}'`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
 
-      updateDetails=async(data)=>{
-        let sql = `UPDATE webContent SET 
+  updateDetails = async (data) => {
+    let sql = `UPDATE webContent SET 
         Aboutus='${data.Aboutus}',
         privacy_policy='${data.privacy_policy}'`;
-        console.log('sql:',sql)
-        const [result, fields] = await promisePool.query(sql);
-         return result;
-      }
-        
-      getDetails=async()=>{
-        let sql = `SELECT * FROM webContent`;
-        const [result, fields] = await promisePool.query(sql);
-        return result;
-      }
-      checkUserByid = async (id) => {
-        let sql = `SELECT * FROM  webContent WHERE id='${id}'`;
-        const [result, fields] = await promisePool.query(sql);
-    
-        return result;
-      };
+    console.log("sql:", sql);
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
 
+  getDetails = async () => {
+    let sql = `SELECT * FROM webContent`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
+  checkUserByid = async (id) => {
+    let sql = `SELECT * FROM  webContent WHERE id='${id}'`;
+    const [result, fields] = await promisePool.query(sql);
+
+    return result;
+  };
 }
-module.exports= new webContentModel()
+module.exports = new webContentModel();

@@ -44,7 +44,7 @@ const registerUser = async (req, res) => {
       headerMSG1,
       mailmsg11
     );
-    console.log('mailMsg:',mailMsg)
+    console.log("mailMsg:", mailMsg);
     if (mailMsg) {
       let secret = speakeasy.generateSecret({ length: 20 });
       QRCode.toDataURL(secret.otpauth_url, async function (err, data_url) {
@@ -62,13 +62,11 @@ const registerUser = async (req, res) => {
         const dataEnter = await userModel.saveUserDetails(data);
 
         if (dataEnter) {
-          return res
-            .status(201)
-            .send({
-              status: true,
-              msg: "email has been sent succesfully",
-              Token: Token,
-            });
+          return res.status(201).send({
+            status: true,
+            msg: "email has been sent succesfully",
+            Token: Token,
+          });
         } else {
           return res
             .status(400)

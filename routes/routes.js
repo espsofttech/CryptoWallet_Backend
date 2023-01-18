@@ -95,7 +95,7 @@ const supportcontroller = require("../controllers/supportcontroller");
 const webController = require("../controllers/webContentcontroller");
 
 const depositController = require("../controllers/depositController");
-const dashBoardController = require("../controllers/dashBoardController")
+const dashBoardController = require("../controllers/dashBoardController");
 // all schema
 const {
   registerUserSchema,
@@ -251,8 +251,8 @@ router.put(
 // buy and sell exchange
 router.post("/exchange", exchangeController.exchange.bind());
 
-// 
-router.get("/dashBoardData",dashBoardController.getdashBoardData.bind());
+//
+router.get("/dashBoardData", dashBoardController.getdashBoardData.bind());
 
 function ensureWebToken(req, res, next) {
   const x_access_token = req.headers["authorization"];

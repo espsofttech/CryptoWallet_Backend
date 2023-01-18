@@ -11,39 +11,38 @@ const pool = mysql.createPool({
 
 const promisePool = pool.promise();
 
-class faqModel{
+class faqModel {
+  insertDetails = async (data) => {
+    let sql = `INSERT INTO FAQ(Questions,Answer)VALUES('${data.Questions}','${data.Answer}')`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
 
-    insertDetails= async (data) => {
-        let sql = `INSERT INTO FAQ(Questions,Answer)VALUES('${data.Questions}','${data.Answer}')`;
-        const [result, fields] = await promisePool.query(sql);
-         return result;
-      };
+  deleteDetails = async (id) => {
+    let sql = `DELETE FROM FAQ WHERE id ='${id}'`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
 
-      deleteDetails=async (id) => {
-        let sql = `DELETE FROM FAQ WHERE id ='${id}'`;
-        const [result, fields] = await promisePool.query(sql);
-         return result;
-      };
-
-      updateDetails=async(data)=>{
-        let sql = `UPDATE FAQ SET 
+  updateDetails = async (data) => {
+    let sql = `UPDATE FAQ SET 
         Questions='${data.Questions}',
         Answer='${data.Answer}'`;
-        const [result, fields] = await promisePool.query(sql);
-         return result;
-      }
-        
-      getDetails=async()=>{
-        let sql = `SELECT * FROM FAQ`;
-        const [result, fields] = await promisePool.query(sql);
-        return result;
-      }
-      
-      checkUserByid = async (id) => {
-        let sql = `SELECT * FROM  FAQ WHERE id='${id}'`;
-        const [result, fields] = await promisePool.query(sql);
-    
-        return result;
-      };
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
+
+  getDetails = async () => {
+    let sql = `SELECT * FROM FAQ`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
+
+  checkUserByid = async (id) => {
+    let sql = `SELECT * FROM  FAQ WHERE id='${id}'`;
+    const [result, fields] = await promisePool.query(sql);
+
+    return result;
+  };
 }
-module.exports=new faqModel()
+module.exports = new faqModel();

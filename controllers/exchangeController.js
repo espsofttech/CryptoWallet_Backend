@@ -23,7 +23,7 @@ const exchange = async (req, res) => {
 
     if (checkBalance[0].balance > 0) {
       let checkDataById = await userWalletModel.checkDataById1(user_id);
-      // console.log(checkDataById)
+
       if (checkDataById.length > 0) {
         if (type == 1) {
           let deductAmt = await userWalletModel.updateBalancebyid(
@@ -32,19 +32,20 @@ const exchange = async (req, res) => {
             amount
           );
           if (deductAmt) {
-            let updatWallet = await userWalletModel.Balancebyid(user_id,coinId,buyamount
+            let updatWallet = await userWalletModel.Balancebyid(
+              user_id,
+              coinId,
+              buyamount
             );
             if (updatWallet) {
               const insertIntoTransaction =
                 await transactionModel.insertDetails(req.body);
               if (insertIntoTransaction) {
-                return res
-                  .status(201)
-                  .send({
-                    status: true,
-                    msg: "successfully",
-                    data: "data inserted successfully in transaction model",
-                  });
+                return res.status(201).send({
+                  status: true,
+                  msg: "successfully",
+                  data: "data inserted successfully in transaction model",
+                });
               } else {
                 return res
                   .status(400)
@@ -61,7 +62,11 @@ const exchange = async (req, res) => {
               .send({ status: false, msg: "something went wrong" });
           }
         } else if (type == 2) {
-          let sell = await userWalletModel.Balancebyid1(user_id,coinId,buyamount);
+          let sell = await userWalletModel.Balancebyid1(
+            user_id,
+            coinId,
+            buyamount
+          );
           if (sell) {
             let updatWallet = userWalletModel.updateBalancebyid1(
               user_id,
@@ -72,13 +77,11 @@ const exchange = async (req, res) => {
               const insertIntoTransaction =
                 await transactionModel.insertDetails(req.body);
               if (insertIntoTransaction) {
-                return res
-                  .status(201)
-                  .send({
-                    status: true,
-                    msg: "balance deducted successfully",
-                    data: "data inserted successfully in transaction model",
-                  });
+                return res.status(201).send({
+                  status: true,
+                  msg: "balance deducted successfully",
+                  data: "data inserted successfully in transaction model",
+                });
               } else {
                 return res
                   .status(400)

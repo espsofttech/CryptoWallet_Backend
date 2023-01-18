@@ -11,22 +11,18 @@ const pool = mysql.createPool({
 
 const promisePool = pool.promise();
 
-class coinsModel{
-  insertCoinsDetails = async (data)=>{
+class coinsModel {
+  insertCoinsDetails = async (data) => {
     let sql = `INSERT INTO coins (ethPrivateKey,ethPublicKey,btcPrivateKey,btcPublicKey) VALUES ('${data.ethPrivateKey}','${data.ethPublicKey}','${data.btcPrivateKey}','${data.btcPublicKey}')`;
     const [result, fields] = await promisePool.query(sql);
-    
-        return result;
-  }
-getCoinsDetails= async ()=>{
-let sql = `SELECT * FROM coins`;
-const [result, fields] = await promisePool.query(sql);
 
-return result;
+    return result;
+  };
+  getCoinsDetails = async () => {
+    let sql = `SELECT * FROM coins`;
+    const [result, fields] = await promisePool.query(sql);
 
-
-
-
+    return result;
+  };
 }
-}
-module.exports= new coinsModel()
+module.exports = new coinsModel();

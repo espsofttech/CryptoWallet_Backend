@@ -58,16 +58,14 @@ const getAllAccountDetails = async (req, res) => {
         .status(200)
         .send({ status: true, msg: "successfull", data: details });
     } else {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          msg: " something went wrong please try again ",
-        });
+      return res.status(400).send({
+        status: false,
+        msg: " something went wrong please try again ",
+      });
     }
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });
   }
 };
 
-module.exports = { createAccountType, deleteAccountData ,getAllAccountDetails };
+module.exports = { createAccountType, deleteAccountData, getAllAccountDetails };

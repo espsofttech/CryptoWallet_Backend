@@ -119,10 +119,10 @@ const getAllBankDetails = async (req, res) => {
 };
 
 const updateDetails = async (req, res) => {
-  console.log('updateDetails')
+  console.log("updateDetails");
   try {
     let user_id = req.params.user_id;
-    console.log('user_id', user_id)
+    console.log("user_id", user_id);
     const checkId = await bankModel.checkUserByid(user_id);
     let GSTimage = !req.files["GSTimage"]
       ? null
@@ -133,7 +133,7 @@ const updateDetails = async (req, res) => {
     let bankStatementImage = !req.files["bankStatementImage"]
       ? null
       : req.files["bankStatementImage"][0].filename;
-    console.log('checkId:', checkId.length)
+    console.log("checkId:", checkId.length);
     let data = {
       user_id: req.body.user_id,
       bank_name: req.body.bank_name,
@@ -145,17 +145,15 @@ const updateDetails = async (req, res) => {
       accountType: req.body.accountType,
       GSTImage: GSTimage,
       cancelledChequeImage: cancelledChequeImage,
-      bankStatementImage: bankStatementImage
+      bankStatementImage: bankStatementImage,
     };
     if (checkId.length > 0) {
-
       const update = await bankModel.updateDetails(data, user_id);
       if (update) {
         return res
           .status(201)
           .send({ status: true, msg: " data updated successfully" });
       } else {
-
         return res
           .status(400)
           .send({ status: false, msg: "something went wrong" });
@@ -167,7 +165,7 @@ const updateDetails = async (req, res) => {
         .send({ status: true, msg: " data updated successfully" });
     }
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(500).send({ status: false, error: err.message });
   }
 };

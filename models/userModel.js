@@ -12,7 +12,6 @@ const pool = mysql.createPool({
 const promisePool = pool.promise();
 
 class userModel {
-  
   getUserEmail = async (email) => {
     let sql = `SELECT * FROM users where email ='${email}'`;
     const [result, fields] = await promisePool.query(sql);
@@ -25,7 +24,7 @@ class userModel {
     return result;
   };
 
-  updatePassword = async (hash,data) => {
+  updatePassword = async (hash, data) => {
     let sql = `UPDATE users SET password ='${hash}' WHERE email='${data}'`;
     const [result, fields] = await promisePool.query(sql);
     return result;
@@ -36,7 +35,7 @@ class userModel {
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
-  resetPassword = async (hash,email) => {
+  resetPassword = async (hash, email) => {
     let sql = `UPDATE users SET password ='${hash}' WHERE email='${email}'`;
     const [result, fields] = await promisePool.query(sql);
     return result;
@@ -91,18 +90,17 @@ WHERE id = '${id}'`;
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
-  getAllUsersList=async()=>{
-    let sql =`SELECT COUNT('id') FROM users`;
+  getAllUsersList = async () => {
+    let sql = `SELECT COUNT('id') FROM users`;
     const [result, fields] = await promisePool.query(sql);
     return result;
-
-  }
-  getUserOfToday=async()=>{
+  };
+  getUserOfToday = async () => {
     let sql = `SELECT COUNT('id')FROM users
-     WHERE DATE(created_At) = CURDATE();`
-     const [result, fields] = await promisePool.query(sql);
-     return result;
-}
+     WHERE DATE(created_At) = CURDATE();`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
 }
 
 module.exports = new userModel();
