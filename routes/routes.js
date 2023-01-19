@@ -258,12 +258,18 @@ router.post("/exchange", exchangeController.exchange.bind());
 router.get("/dashBoardData", dashBoardController.getdashBoardData.bind());
 
 // withdraw  btc
-router.post("/withdrawBtc", withdrawalcontroller.withdrawBtc.bind());
+router.post("/withdrawcrypto", withdrawalcontroller.withdrawcrypto.bind());
 // get details
 router.get("/getWithdrawalDetails", withdrawalcontroller.getAllList.bind());
 
 //  update status
 router.put("/updatestatus", withdrawalcontroller.updateStatus.bind());
+// bank withdraw by INR
+
+router.post("/bankWithdraw",withdrawalcontroller.bankWithdraw.bind());
+
+// 
+router.get("/getAllDetailsOfcoin/:user_id",withdrawalcontroller.getAllDetailsOfcoin.bind());
 
 function ensureWebToken(req, res, next) {
   const x_access_token = req.headers["authorization"];
