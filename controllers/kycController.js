@@ -13,7 +13,13 @@ const insertData = async (req, res) => {
     }
 
     let image = !req.files["image"] ? null : req.files["image"][0].filename;
-let bankStatement= !req.files["bankStatement"] ? null : req.files["bankStatement"][0].filename;
+    if (image) {
+      req.body.image = image;
+    } else {
+      req.body.image = req.body.old_profile_pic;
+    }
+    let bankStatement= !req.files["bankStatement"] ? null : req.files["bankStatement"][0].filename;
+
 
     let data = {
       user_id: req.body.user_id,
@@ -21,13 +27,14 @@ let bankStatement= !req.files["bankStatement"] ? null : req.files["bankStatement
       dob: req.body.dob,
       email: req.body.email,
       identity_proof_id: req.body.identity_proof_id,
-      image: image,
+      image: req.body.image,
       doc_no: req.body.doc_no,
       Address: req.body.Address,
       bankStatement:bankStatement,
       phoneNo:req.body.phoneNo
 
     };
+    console.log('datadatadata',data)
     const kycDetail = await kycModel.getKycDataById(req.body.user_id)
     let insert = ''
     if (kycDetail.length > 0) {

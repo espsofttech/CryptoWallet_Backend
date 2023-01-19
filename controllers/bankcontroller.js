@@ -124,16 +124,28 @@ const updateDetails = async (req, res) => {
     let user_id = req.params.user_id;
     console.log("user_id", user_id);
     const checkId = await bankModel.checkUserByid(user_id);
-    let GSTimage = !req.files["GSTimage"]
-      ? null
-      : req.files["GSTimage"][0].filename;
-    let cancelledChequeImage = !req.files["cancelledChequeImage"]
-      ? null
-      : req.files["cancelledChequeImage"][0].filename;
-    let bankStatementImage = !req.files["bankStatementImage"]
-      ? null
-      : req.files["bankStatementImage"][0].filename;
-    console.log("checkId:", checkId.length);
+
+    let GSTImage = !req.files["GSTImage"] ? null : req.files["GSTImage"][0].filename;
+    if (GSTImage) {
+      req.body.GSTImage = GSTImage;
+    } else {
+      req.body.GSTImage = req.body.old_GSTImage;
+    }
+
+    let cancelledChequeImage = !req.files["cancelledChequeImage"] ? null : req.files["cancelledChequeImage"][0].filename;
+    if (cancelledChequeImage) {
+      req.body.cancelledChequeImage = cancelledChequeImage;
+    } else {
+      req.body.cancelledChequeImage = req.body.old_cancelledChequeImage;
+    }
+
+    let bankStatementImage = !req.files["bankStatementImage"] ? null : req.files["bankStatementImage"][0].filename;
+    if (bankStatementImage) {
+      req.body.bankStatementImage = bankStatementImage;
+    } else {
+      req.body.bankStatementImage = req.body.old_bankStatementImage;
+    }
+
     let data = {
       user_id: req.body.user_id,
       bank_name: req.body.bank_name,
@@ -143,10 +155,12 @@ const updateDetails = async (req, res) => {
       ifsc_code: req.body.ifsc_code,
       panCardno: req.body.panCardno,
       accountType: req.body.accountType,
-      GSTImage: GSTimage,
-      cancelledChequeImage: cancelledChequeImage,
-      bankStatementImage: bankStatementImage,
+      company_name: req.body.company_name,
+      GSTImage: req.body.GSTImage,
+      cancelledChequeImage: req.body.cancelledChequeImage,
+      bankStatementImage: req.body.bankStatementImage
     };
+    console.log('datadatadata',data)
     if (checkId.length > 0) {
       const update = await bankModel.updateDetails(data, user_id);
       if (update) {
