@@ -23,7 +23,7 @@ const exchange = async (req, res) => {
 
     if (checkBalance[0].balance > 0) {
       let checkDataById = await userWalletModel.checkDataById1(user_id);
-      // console.log(checkDataById)
+
       if (checkDataById.length > 0) {
         if (type == 1) {
           let deductAmt = await userWalletModel.updateBalancebyid(
@@ -41,13 +41,11 @@ const exchange = async (req, res) => {
               const insertIntoTransaction =
                 await transactionModel.insertDetails(req.body);
               if (insertIntoTransaction) {
-                return res
-                  .status(201)
-                  .send({
-                    status: true,
-                    msg: "successfully",
-                    data: "data inserted successfully in transaction model",
-                  });
+                return res.status(201).send({
+                  status: true,
+                  msg: "successfully",
+                  data: "data inserted successfully in transaction model",
+                });
               } else {
                 return res
                   .status(400)
@@ -79,13 +77,11 @@ const exchange = async (req, res) => {
               const insertIntoTransaction =
                 await transactionModel.insertDetails(req.body);
               if (insertIntoTransaction) {
-                return res
-                  .status(201)
-                  .send({
-                    status: true,
-                    msg: "balance deducted successfully",
-                    data: "data inserted successfully in transaction model",
-                  });
+                return res.status(201).send({
+                  status: true,
+                  msg: "balance deducted successfully",
+                  data: "data inserted successfully in transaction model",
+                });
               } else {
                 return res
                   .status(400)

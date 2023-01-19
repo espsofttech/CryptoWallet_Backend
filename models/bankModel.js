@@ -47,7 +47,7 @@ class bankModel {
     return result;
   };
   updateDetails = async (data, user_id) => {
-    console.log('data,user_id:', data, user_id)
+    console.log("data,user_id:", data, user_id);
     let sql = `UPDATE Bankdetail SET 
     user_id='${user_id}',
     bank_name = '${data.bank_name}',
@@ -61,11 +61,10 @@ class bankModel {
     GSTImage='${data.GSTImage}',
     cancelledChequeImage='${data.cancelledChequeImage}',
     bankStatementImage='${data.bankStatementImage}'
-    WHERE user_id='${user_id}'`
+    WHERE user_id='${user_id}'`;
     const [result, fields] = await promisePool.query(sql);
 
     return result;
-  }
-
+  };
 }
 module.exports = new bankModel();

@@ -13,7 +13,7 @@ const promisePool = pool.promise();
 
 class kycModel {
   insertData = async (data) => {
-    let sql = `INSERT INTO KYC (user_id,user_name,dob,email,identity_proof_id,image,doc_no,Address,kyc_status) VALUES ('${data.user_id}','${data.user_name}','${data.dob}','${data.email}','${data.identity_proof_id}','${data.image}','${data.doc_no}','${data.Address}',1)`;
+    let sql = `INSERT INTO KYC (user_id,user_name,dob,email,identity_proof_id,image,doc_no,Address,bankStatement,phoneNo,kyc_status) VALUES ('${data.user_id}','${data.user_name}','${data.dob}','${data.email}','${data.identity_proof_id}','${data.image}','${data.doc_no}','${data.Address}','${data.bankStatement}','${data.phoneNo}',1)`;
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
@@ -52,18 +52,19 @@ class kycModel {
   getKycDataById = async (id) => {
     let sql = `select * from KYC where user_id='${id}'`
     console.log('sql:', sql)
+    // let sql = `select * from KYC where id='${id}'`;
+
     const [result, fields] = await promisePool.query(sql);
     return result;
 
   }
 
   updateKycData = async (data) => {
-    let sql = `UPDATE KYC SET user_id = '${data.user_id}',user_name = '${data.user_name}',dob = '${data.dob}',email= '${data.email}',identity_proof_id = '${data.identity_proof_id}',image = '${data.image}',doc_no = '${data.doc_no}',kyc_status= '1' , Address='${data.Address}' WHERE user_id = '${data.user_id}'`;
-    console.log('sqllllll', sql)
+    let sql = `UPDATE KYC SET user_id = '${data.user_id}',user_name = '${data.user_name}',dob = '${data.dob}',email= '${data.email}',identity_proof_id = '${data.identity_proof_id}',image = '${data.image}',doc_no = '${data.doc_no}',kyc_status= '1' , Address='${data.Address}',bankStatement='${data.bankStatement}',phoneNo='${data.phoneNo}'WHERE user_id = '${data.user_id}'`;
+   
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
 }
-
 
 module.exports = new kycModel();

@@ -2,6 +2,7 @@ const kycModel = require("../models/kycModel");
 const { validationResult } = require("express-validator");
 
 const insertData = async (req, res) => {
+  console.log("req:", req);
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -17,6 +18,7 @@ const insertData = async (req, res) => {
     } else {
       req.body.image = req.body.old_profile_pic;
     }
+    let bankStatement= !req.files["bankStatement"] ? null : req.files["bankStatement"][0].filename;
 
 
     let data = {
@@ -28,6 +30,9 @@ const insertData = async (req, res) => {
       image: req.body.image,
       doc_no: req.body.doc_no,
       Address: req.body.Address,
+      bankStatement:bankStatement,
+      phoneNo:req.body.phoneNo
+
     };
     console.log('datadatadata',data)
     const kycDetail = await kycModel.getKycDataById(req.body.user_id)

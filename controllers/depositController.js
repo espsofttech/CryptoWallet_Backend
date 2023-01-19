@@ -107,12 +107,10 @@ const updateStatusDetails = async (req, res) => {
                 .send({ status: false, msg: "something went wrong" });
             }
           } else {
-            return res
-              .status(404)
-              .send({
-                status: false,
-                msg: "no details found in user wallet by this id",
-              });
+            return res.status(404).send({
+              status: false,
+              msg: "no details found in user wallet by this id",
+            });
           }
         } else if (statusData == 2) {
           const rejectStatus = await depositModel.updateFiatStatus(user_id);

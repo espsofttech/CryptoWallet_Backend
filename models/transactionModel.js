@@ -11,15 +11,11 @@ const pool = mysql.createPool({
 
 const promisePool = pool.promise();
 
-
 class transactionModel {
-
-    insertDetails= async(data)=>{
-        let sql = `INSERT INTO transaction(user_id,coin_id,buyCoin_Id,type,amount)VALUES('${data.user_id}','${data.coin_id}','${data.buyCoin_Id}','${data.type}','${data.amount}')`;
-        const [result, fields] = await promisePool.query(sql);
-        return result;
-    }
-
-
+  insertDetails = async (data) => {
+    let sql = `INSERT INTO transaction(user_id,coin_id,buyCoin_Id,type,amount)VALUES('${data.user_id}','${data.coin_id}','${data.buyCoin_Id}','${data.type}','${data.amount}')`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
 }
-module.exports= new transactionModel();
+module.exports = new transactionModel();

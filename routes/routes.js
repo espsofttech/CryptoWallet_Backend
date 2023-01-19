@@ -55,14 +55,23 @@ let storage = multer.diskStorage({
 });
 let upload = multer({ storage: storage });
 let profileUpload = upload.fields([{ name: "image", maxCount: 10 }]);
-let profileUploadData = upload.fields([{ name: "image", maxCount: 10 }]);
+// let profileUploadData = upload.fields([{ name: "image", maxCount: 10 }]);
 
-
-let bankUpload = upload.fields([{ name: "GSTImage", maxCount: 10 },{ name: "cancelledChequeImage", maxCount: 10 },{ name: "bankStatementImage", maxCount: 10 }]);
+let bankUpload = upload.fields([
+  { name: "GSTimage", maxCount: 10 },
+  { name: "cancelledChequeImage", maxCount: 10 },
+  { name: "bankStatementImage", maxCount: 10 }
+]);
 let insertFiat = upload.fields([{ name: "upload_file", maxCount: 10 }]);
+
+let Uploads = upload.fields([
+  {name: "image", maxCount: 10},
+  {name: "bankStatement", maxCount: 10}
+])
+
 //  test--------
 router.get("/testme", function (req, res) {
-  try { 
+  try {
     return res.send({ status: true, msg: "successfull" });
   } catch (err) {
     return res.send({ status: false, error: err.message });
@@ -73,7 +82,7 @@ router.get("/testme", function (req, res) {
 const registercontroller = require("../controllers/register.controller");
 const logincontroller = require("../controllers/login.controller");
 const usercontroller = require("../controllers/user.controller");
-const exchangeController = require("../controllers/exchangeController")
+const exchangeController = require("../controllers/exchangeController");
 
 // identity controller
 const identitycontroller = require("../controllers/identity.controller");
@@ -86,12 +95,14 @@ const bankcontroller = require("../controllers/bankcontroller");
 // accountcontroller
 const accountcontroller = require("../controllers/accountType.controller");
 
-// 
-const FAQcontroller = require("../controllers/FAQcontroller")
-const supportcontroller = require("../controllers/supportcontroller")
-const webController = require("../controllers/webContentcontroller")
+//
+const FAQcontroller = require("../controllers/FAQcontroller");
+const supportcontroller = require("../controllers/supportcontroller");
+const webController = require("../controllers/webContentcontroller");
 
-const depositController = require("../controllers/depositController")
+const depositController = require("../controllers/depositController");
+const dashBoardController = require("../controllers/dashBoardController");
+const withdrawalcontroller = require("../controllers/withdrawalcontroller")
 // all schema
 const {
   registerUserSchema,
@@ -165,7 +176,7 @@ router.get("/getAllIdentity", identitycontroller.getAllData.bind());
 
 router.post(
   "/InsertKycData",
-  profileUploadData,
+  Uploads,
   kycController.insertData.bind()
 );
 
@@ -180,7 +191,11 @@ router.put("/successKyc/:id", kycController.UpdateSuccessKyc.bind());
 // reject kyc approval
 router.put("/rejectKyc/:id", kycController.rejectKyc.bind());
 //  bank details
-router.post("/insertBankDetails/:user_id", bankUpload,bankcontroller.insertDetails.bind());
+router.post(
+  "/insertBankDetails/:user_id",
+  bankUpload,
+  bankcontroller.insertDetails.bind()
+);
 
 router.delete(
   "/deletBankeData/:user_id",
@@ -193,7 +208,11 @@ router.get(
 );
 
 router.get("/getAllBankDetails", bankcontroller.getAllBankDetails.bind());
-router.put("/updateBankDetails/:user_id",bankUpload,bankcontroller.updateDetails.bind());
+router.put(
+  "/updateBankDetails/:user_id",
+  bankUpload,
+  bankcontroller.updateDetails.bind()
+);
 
 // accountType
 router.post("/accountType", accountcontroller.createAccountType.bind());
@@ -208,32 +227,47 @@ router.get(
   accountcontroller.getAllAccountDetails.bind()
 );
 
-// support 
-router.post("/insertsupportDetails",supportcontroller.insertsupportDetails.bind()); router.get("/getsupportDetails",supportcontroller.getsupportDetails.bind());
+// support
+router.post(
+  "/insertsupportDetails",
+  supportcontroller.insertsupportDetails.bind()
+);
+router.get("/getsupportDetails", supportcontroller.getsupportDetails.bind());
 
 // faq
-router.post("/insertfaqDetails",FAQcontroller.insertfaqDetails.bind());
-router.delete("/deletefaqDetails/:id",FAQcontroller.deletefaqDetails.bind());
-router.get("/getfaqDetails",FAQcontroller.getfaqDetails.bind());
-router.put("/updatefaqDetails/:id",FAQcontroller.updatefaqDetails.bind());
+router.post("/insertfaqDetails", FAQcontroller.insertfaqDetails.bind());
+router.delete("/deletefaqDetails/:id", FAQcontroller.deletefaqDetails.bind());
+router.get("/getfaqDetails", FAQcontroller.getfaqDetails.bind());
+router.put("/updatefaqDetails/:id", FAQcontroller.updatefaqDetails.bind());
 
 // web content
- router.post("/insertDetails",webController.insertDetails.bind());
- router.delete("/deleteDetails/:id",webController.deleteDetails.bind());
- router.get("/getDetails",webController.getDetails.bind());
- router.put("/updateDetails/:id",webController.updateDetails.bind());
+router.post("/insertDetails", webController.insertDetails.bind());
+router.delete("/deleteDetails/:id", webController.deleteDetails.bind());
+router.get("/getDetails", webController.getDetails.bind());
+router.put("/updateDetails/:id", webController.updateDetails.bind());
 
+//  deposit fiat
+router.post("/depositFiat", insertFiat, depositController.depositFiat.bind());
 
-//  deposit fiat 
-router.post("/depositFiat",insertFiat,depositController.depositFiat.bind());
-
-router.get("/getAllfiatDetails",depositController.getAllfiatDetails.bind());
+router.get("/getAllfiatDetails", depositController.getAllfiatDetails.bind());
 // update status
-router.put("/updateStatusDetails",depositController.updateStatusDetails.bind());
+router.put(
+  "/updateStatusDetails",
+  depositController.updateStatusDetails.bind()
+);
 // buy and sell exchange
-router.post("/exchange",exchangeController.exchange.bind());
+router.post("/exchange", exchangeController.exchange.bind());
 
+//dashBoardData
+router.get("/dashBoardData", dashBoardController.getdashBoardData.bind());
 
+// withdraw  btc
+router.post("/withdrawBtc",withdrawalcontroller.withdrawBtc.bind());
+// get details 
+router.get("/getWithdrawalDetails",withdrawalcontroller.getAllList.bind());
+
+//  update status
+router.put("/updatestatus",withdrawalcontroller.updateStatus.bind());
 
 function ensureWebToken(req, res, next) {
   const x_access_token = req.headers["authorization"];

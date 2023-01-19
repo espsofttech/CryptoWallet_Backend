@@ -69,24 +69,18 @@ exports.resetPasswordSchema = [
     .withMessage("password should have minimun 5 characters"),
 ];
 
-exports.bankDetailsSchema=[
-    check("	bank_account_holder_name")
-    .not().isEmpty()
+exports.bankDetailsSchema = [
+  check("	bank_account_holder_name")
+    .not()
+    .isEmpty()
     .withMessage("bank account holder name is required")
     .notEmpty()
     .isLength({ min: 5 })
-    .withMessage("account holder name should be  should have minimun 5 characters"),
-    check("branchName")
-    .not().isEmpty()
-    .withMessage("branch name is required"),
-    check("AccountNumber")
-    .not().isEmpty()
-    .withMessage("account no is required"),
-    check("	ifsc_code")
-    .not().isEmpty()
-    .withMessage("ifsc_code no is required"),
-    check("	panCardno")
-    .not().isEmpty()
-    .withMessage("panCardno no is required")       
-    
-]
+    .withMessage(
+      "account holder name should be  should have minimun 5 characters"
+    ),
+  check("branchName").not().isEmpty().withMessage("branch name is required"),
+  check("AccountNumber").not().isEmpty().withMessage("account no is required"),
+  check("	ifsc_code").not().isEmpty().withMessage("ifsc_code no is required"),
+  check("	panCardno").not().isEmpty().withMessage("panCardno no is required"),
+];
