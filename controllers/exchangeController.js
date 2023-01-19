@@ -24,7 +24,7 @@ const exchange = async (req, res) => {
     if (checkBalance[0].balance > 0) {
       let checkDataById = await userWalletModel.checkDataById1(user_id);
 
-      if (checkDataById.length > 0) {
+      if (checkDataById.length >= 0) {
         if (type == 1) {
           let deductAmt = await userWalletModel.updateBalancebyid(
             user_id,
