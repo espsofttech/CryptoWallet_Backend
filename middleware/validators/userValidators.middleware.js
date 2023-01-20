@@ -84,3 +84,24 @@ exports.bankDetailsSchema = [
   check("	ifsc_code").not().isEmpty().withMessage("ifsc_code no is required"),
   check("	panCardno").not().isEmpty().withMessage("panCardno no is required"),
 ];
+exports.withdrawSchema=[
+  check("user_id")
+  .not().isEmpty()
+  .withMessage("user_id is required"),
+  check("coin_id")
+  .not().isEmpty()
+  .withMessage("coin_id is required"),
+  check("amount")
+  .not().isEmpty()
+  .withMessage("amount is required")
+
+]
+
+exports.statusSchema=[
+  check("user_id")
+  .not().isEmpty()
+  .withMessage("user_id is required"),
+  check("coin_id")
+  .not().isEmpty()
+  .withMessage("coin_id is required")
+]

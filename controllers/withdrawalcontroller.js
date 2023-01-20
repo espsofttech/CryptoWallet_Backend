@@ -4,6 +4,7 @@ const { validationResult } = require("express-validator");
 const withdrawalModel = require("../models/withdrawalModel");
 const e = require("express");
 const { user } = require("../config");
+const { bankDetailsSchema } = require("../middleware/validators/userValidators.middleware");
 
 const withdrawcrypto = async (req, res) => {
   try {
@@ -91,7 +92,7 @@ const updateStatus = async (req, res) => {
 
     if (checkUserByid.length > 0) {
       const updateStatus = await withdrawalModel.updateStatus1(req.body);
-      console.log(updateStatus);
+
       if (updateStatus) {
         return res
           .status(201)
@@ -125,7 +126,7 @@ const bankWithdraw = async (req, res) => {
     let amount = req.body.amount;
 
     const checkInr = await coinsModel.checkInr(coin_id);
-    console.log(checkInr[0].coinName);
+
     if (checkInr[0].coinName == "INR") {
       const checkBalance = await userWalletModel.checkBalance(req.body);
       let balance = checkBalance[0].balance;

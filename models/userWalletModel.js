@@ -43,9 +43,9 @@ class userWalletModel {
 
   updateBalancebyid = async (user_id, coin_id, amount) => {
     let sql = `UPDATE userWallet SET balance=(balance-${amount})where user_id='${user_id}' and coin_id ='${coin_id}'`;
-  
+
     const [result, fields] = await promisePool.query(sql);
-    console.log(sql,result)
+    console.log(sql, result);
     return result;
   };
   Balancebyid = async (user_id, coinId, buyamount) => {
@@ -68,7 +68,6 @@ class userWalletModel {
   checkBalance = async (data) => {
     let sql = `SELECT balance FROM userWallet WHERE user_id = '${data.user_id}'and coin_id ='${data.coin_id}'`;
     const [result, fields] = await promisePool.query(sql);
-
     return result;
   };
   checkBalance1 = async (data) => {
@@ -77,17 +76,15 @@ class userWalletModel {
     return result;
   };
   withdraw = async (data) => {
-let sql = `UPDATE userWallet SET balance=(balance-${data.amount}) WHERE user_id ='${data.user_id}'and coin_id ='${data.coin_id}'`
-const [result, fields] = await promisePool.query(sql);
-return result;
-  }
-  getIdDetails=async(user_id)=>{
-    let sql = `SELECT * from userWallet  WHERE user_id ='${user_id}'`
+    let sql = `UPDATE userWallet SET balance=(balance-${data.amount}) WHERE user_id ='${data.user_id}'and coin_id ='${data.coin_id}'`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
+  getIdDetails = async (user_id) => {
+    let sql = `SELECT * from userWallet  WHERE user_id ='${user_id}'`;
     const [result, fields] = await promisePool.query(sql);
 
-return result;
-  }
-
-
+    return result;
+  };
 }
 module.exports = new userWalletModel();

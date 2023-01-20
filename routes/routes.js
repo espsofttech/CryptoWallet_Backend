@@ -110,6 +110,8 @@ const {
   forgetPasswordSchema,
   changePasswordSchema,
   resetPasswordSchema,
+  withdrawSchema,
+  statusSchema,
 } = require("../middleware/validators/userValidators.middleware");
 
 router.post(
@@ -263,13 +265,24 @@ router.post("/withdrawcrypto", withdrawalcontroller.withdrawcrypto.bind());
 router.get("/getWithdrawalDetails", withdrawalcontroller.getAllList.bind());
 
 //  update status
-router.put("/updatestatus", withdrawalcontroller.updateStatus.bind());
+router.put(
+  "/updatestatus",
+  statusSchema,
+  withdrawalcontroller.updateStatus.bind()
+);
 // bank withdraw by INR
 
-router.post("/bankWithdraw",withdrawalcontroller.bankWithdraw.bind());
+router.post(
+  "/bankWithdraw",
+  withdrawSchema,
+  withdrawalcontroller.bankWithdraw.bind()
+);
 
-// 
-router.get("/getAllDetailsOfcoin/:user_id",withdrawalcontroller.getAllDetailsOfcoin.bind());
+//get all coin detail by id
+router.get(
+  "/getAllDetailsOfcoin/:user_id",
+  withdrawalcontroller.getAllDetailsOfcoin.bind()
+);
 
 function ensureWebToken(req, res, next) {
   const x_access_token = req.headers["authorization"];
