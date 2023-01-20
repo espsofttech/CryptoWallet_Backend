@@ -24,5 +24,12 @@ class coinsModel {
 
     return result;
   };
+
+  checkInr=async(coin_id)=>{
+    let sql =`SELECT coinName FROM coins WHERE  id='${coin_id}'`;
+    const [result, fields] = await promisePool.query(sql);
+    // console.log(sql , result)
+    return result;
+  }
 }
 module.exports = new coinsModel();
