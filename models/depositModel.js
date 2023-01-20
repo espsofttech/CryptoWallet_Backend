@@ -13,7 +13,8 @@ const promisePool = pool.promise();
 
 class depositModel {
   insertFiat = async (data) => {
-    let sql = `INSERT INTO depositFiat(user_id,coin_id,	balance,status,bank_name,admin_bank_id,upload_file) VALUES ('${data.user_id}','${data.coin_id}','${data.balance}','${data.status}','${data.bank_name}','${data.admin_bank_id}','${data.upload_file}')`;
+    let sql = `INSERT INTO depositFiat(user_id,coin_id,	balance,status,bank_name,admin_bank_id,upload_file,transaction_id) VALUES ('${data.user_id}','${data.coin_id}','${data.balance}','${data.status}','${data.bank_name}','${data.admin_bank_id}','${data.upload_file}','${data.transaction_id}')`;
+    console.log('sql:::', sql);
     const [result, fields] = await promisePool.query(sql);
     return result;
   };

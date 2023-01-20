@@ -22,7 +22,7 @@ const depositFiat = async (req, res) => {
       balance: req.body.balance,
       status: req.body.status,
       bank_name: req.body.bank_name,
-
+      transaction_id:req.body.transaction_id,
       admin_bank_id: req.body.admin_bank_id,
       upload_file: upload_file,
     };
