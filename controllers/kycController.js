@@ -2,8 +2,8 @@ const kycModel = require("../models/kycModel");
 const { validationResult } = require("express-validator");
 
 const insertData = async (req, res) => {
-  console.log("req:", req);
-  try {
+
+  try { 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(200).send({
@@ -34,7 +34,7 @@ const insertData = async (req, res) => {
       phoneNo:req.body.phoneNo
 
     };
-    console.log('datadatadata',data)
+
     const kycDetail = await kycModel.getKycDataById(req.body.user_id)
     let insert = ''
     if (kycDetail.length > 0) {

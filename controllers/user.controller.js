@@ -56,7 +56,7 @@ const updateUserById = async (req, res) => {
     let id = req.params.id;
 
     const updateUser = await userModel.userUpdateById(req.body, id);
-    console.log("updateUser", updateUser);
+ 
     if (updateUser) {
       return res
         .status(201)

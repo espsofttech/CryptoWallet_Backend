@@ -44,7 +44,7 @@ const registerUser = async (req, res) => {
       headerMSG1,
       mailmsg11
     );
-    console.log("mailMsg:", mailMsg);
+  
     if (mailMsg) {
       let secret = speakeasy.generateSecret({ length: 20 });
       QRCode.toDataURL(secret.otpauth_url, async function (err, data_url) {

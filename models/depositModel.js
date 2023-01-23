@@ -23,6 +23,7 @@ class depositModel {
   //   const [result, fields] = await promisePool.query(sql);
   //   return result;
   // };
+  
   getAllDetail = async () => {
     let sql = `SELECT depositFiat.user_id, depositFiat.	coin_id, depositFiat.balance, depositFiat.status, depositFiat.bank_name, depositFiat.transaction_id, depositFiat.	admin_bank_id	, depositFiat.upload_file, depositFiat.	created_At, users.first_name as userName ,coins.coinName ,Bankdetail.bank_account_holder_name from depositFiat LEFT JOIN users ON depositFiat.user_id = users.id LEFT JOIN coins  ON depositFiat.coin_id = coins.id LEFT JOIN Bankdetail ON depositFiat.admin_bank_id = Bankdetail.id `;
     const [result, fields] = await promisePool.query(sql);
@@ -31,7 +32,6 @@ class depositModel {
 
   updateStatus = async (user_id) => {
     let sql = `UPDATE depositFiat SET status =1  where user_id ='${user_id}'`;
-
     const [result, fields] = await promisePool.query(sql);
     //console.log(sql,result)
     return result;

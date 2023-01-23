@@ -119,27 +119,33 @@ const getAllBankDetails = async (req, res) => {
 };
 
 const updateDetails = async (req, res) => {
-  console.log("updateDetails");
+
   try {
     let user_id = req.params.user_id;
-    console.log("user_id", user_id);
+
     const checkId = await bankModel.checkUserByid(user_id);
 
-    let GSTImage = !req.files["GSTImage"] ? null : req.files["GSTImage"][0].filename;
+    let GSTImage = !req.files["GSTImage"]
+      ? null
+      : req.files["GSTImage"][0].filename;
     if (GSTImage) {
       req.body.GSTImage = GSTImage;
     } else {
       req.body.GSTImage = req.body.old_GSTImage;
     }
 
-    let cancelledChequeImage = !req.files["cancelledChequeImage"] ? null : req.files["cancelledChequeImage"][0].filename;
+    let cancelledChequeImage = !req.files["cancelledChequeImage"]
+      ? null
+      : req.files["cancelledChequeImage"][0].filename;
     if (cancelledChequeImage) {
       req.body.cancelledChequeImage = cancelledChequeImage;
     } else {
       req.body.cancelledChequeImage = req.body.old_cancelledChequeImage;
     }
 
-    let bankStatementImage = !req.files["bankStatementImage"] ? null : req.files["bankStatementImage"][0].filename;
+    let bankStatementImage = !req.files["bankStatementImage"]
+      ? null
+      : req.files["bankStatementImage"][0].filename;
     if (bankStatementImage) {
       req.body.bankStatementImage = bankStatementImage;
     } else {
@@ -158,9 +164,9 @@ const updateDetails = async (req, res) => {
       company_name: req.body.company_name,
       GSTImage: req.body.GSTImage,
       cancelledChequeImage: req.body.cancelledChequeImage,
-      bankStatementImage: req.body.bankStatementImage
+      bankStatementImage: req.body.bankStatementImage,
     };
-    console.log('datadatadata',data)
+   
     if (checkId.length > 0) {
       const update = await bankModel.updateDetails(data, user_id);
       if (update) {

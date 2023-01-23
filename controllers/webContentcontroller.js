@@ -67,7 +67,7 @@ const getDetails = async (req, res) => {
 };
 
 const updateDetails = async (req, res) => {
-  console.log("updateDetails", updateDetails);
+
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

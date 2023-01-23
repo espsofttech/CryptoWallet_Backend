@@ -73,11 +73,10 @@ const login = async (req, res) => {
         //   return res
         //   .status(400)
         //   .send({ status: false, msg: "we dont have user with this email" });
-      
+
         // }
 
         const coin = await coinsModel.getCoinsDetails();
-
 
         for (let i in coin) {
           const checkDataById = await userWalletModel.checkDataById(
@@ -88,29 +87,40 @@ const login = async (req, res) => {
           if (checkDataById.length == 0) {
             let wallet = {};
 
-            if (["BTC", "ETH", "USDT", "USDC", "INR", "AED", "EURO", "USD"].includes(coin[i].symbol)) {
+            if (
+              [
+                "BTC",
+                "ETH",
+                "USDT",
+                "USDC",
+                "INR",
+                "AED",
+                "EURO",
+                "USD",
+              ].includes(coin[i].symbol)
+            ) {
               wallet = await web3fun(coin[i].symbol);
             }
-
 
             if (wallet) {
               var userwallet = {
                 user_id: checkEmail[0].id,
                 coin_id: coin[i].id,
                 balance: 0,
-                privateKey: wallet.privateKey ? await encriptedKey(wallet.privateKey, "CryptoWallet123#") : '',
-                publicKey: wallet.publicKey
-              }
+                privateKey: wallet.privateKey
+                  ? await encriptedKey(wallet.privateKey, "CryptoWallet123#")
+                  : "",
+                publicKey: wallet.publicKey,
+              };
             }
             let create = await userWalletModel.insertDetails(userwallet);
-
           }
         }
         return res.status(201).send({
           status: true,
           msg: " login success",
           token: Token,
-          data: checkEmail[0]
+          data: checkEmail[0],
         });
       }
     } else {
@@ -119,14 +129,12 @@ const login = async (req, res) => {
         .send({ status: false, msg: "we dont have user with this email" });
     }
   } catch (err) {
-
     return res.status(500).send({ status: false, error: err.message });
   }
 };
 
 async function web3fun(symbol) {
   try {
-
     if (symbol == "BTC") {
       const bitCoinhdWallet = await axios.get(
         "http://blockchainexpert.co.in:7000/api/btc/create_wallet"
@@ -159,33 +167,28 @@ async function web3fun(symbol) {
         privateKey: USDCwallet.data.data.wallet.private,
         publicKey: USDCwallet.data.data.wallet.public,
       };
-    }
-    else if (symbol == "INR") {
+    } else if (symbol == "INR") {
       return {
-        privateKey: '',
-        publicKey: '',
+        privateKey: "",
+        publicKey: "",
+      };
+    } else if (symbol == "AED") {
+      return {
+        privateKey: "",
+        publicKey: "",
+      };
+    } else if (symbol == "EURO") {
+      return {
+        privateKey: "",
+        publicKey: "",
+      };
+    } else if (symbol == "USD") {
+      return {
+        privateKey: "",
+        publicKey: "",
       };
     }
-    else if (symbol == "AED") {
-      return {
-        privateKey: '',
-        publicKey: '',
-      };
-    }
-    else if (symbol == "EURO") {
-      return {
-        privateKey: '',
-        publicKey: '',
-      };
-    }
-    else if (symbol == "USD") {
-      return {
-        privateKey: '',
-        publicKey: '',
-      };
-    }
-  } catch (err) {
-  }
+  } catch (err) {}
 }
 async function encriptedKey(pvkey, hash) {
   var private_key = pvkey;

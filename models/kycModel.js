@@ -31,7 +31,7 @@ class kycModel {
         `;
 
     const [result, fields] = await promisePool.query(sql);
-    console.log(sql, result);
+    // console.log(sql, result);
     return result;
   };
 
@@ -51,7 +51,7 @@ class kycModel {
 
   getKycDataById = async (id) => {
     let sql = `select * from KYC where user_id='${id}'`
-    console.log('sql:', sql)
+    // console.log('sql:', sql)
     // let sql = `select * from KYC where id='${id}'`;
 
     const [result, fields] = await promisePool.query(sql);

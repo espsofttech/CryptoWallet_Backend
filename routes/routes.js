@@ -312,4 +312,13 @@ async function verifyJWT(req, res, next) {
   });
 }
 
+router.post("*",function(req,res){
+return res.status(404).send({status:false ,data:null, msg:"invalid request {url not found}" });
+});
+
+
+router.get("*",function(req,res){
+  return res.status(404).send({status:false ,data:null, msg:"invalid request {url not found}" });
+  });
+
 module.exports.routes = router;
