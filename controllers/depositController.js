@@ -22,7 +22,7 @@ const depositFiat = async (req, res) => {
       balance: req.body.balance,
       status: req.body.status,
       bank_name: req.body.bank_name,
-
+      transaction_id: req.body.transaction_id,
       admin_bank_id: req.body.admin_bank_id,
       upload_file: upload_file,
     };
@@ -69,8 +69,10 @@ const updateStatusDetails = async (req, res) => {
 
     let coin_id = req.body.coin_id;
 
-    let checkDetailsByuser_id = await depositModel.checkDetailsByid(user_id);
+    let balance = req.body.balance;
 
+    let checkDetailsByuser_id = await depositModel.checkDetailsByid(user_id);
+    console.log(checkDetailsByuser_id)
     if (checkDetailsByuser_id.length > 0) {
       let checkDetailsBycoin_id = await depositModel.checkDetailsBycoinid(
         coin_id
@@ -78,17 +80,21 @@ const updateStatusDetails = async (req, res) => {
       if (checkDetailsBycoin_id.length > 0) {
         let statusData = req.body.status;
         if (statusData == 1) {
-          const checkUserWalletById = await userWalletModel.getdetailById(
+          const checkUserWalletById = await userWalletModel.getIdDetails(
             user_id
           );
           if (checkUserWalletById.length > 0) {
             const updateStatus = await depositModel.updateStatus(user_id);
             if (updateStatus) {
-              let balance = checkDetailsByuser_id[0].balance;
+            const checkpreviousBalance = await depositModel.checkpreviousBalance(user_id,coin_id);
 
+              let previousbalance = checkpreviousBalance[0].balance;
+              console.log('previousbalance',previousbalance)
               const updateUserWallet = await userWalletModel.updateBalance(
+                previousbalance,
                 balance,
-                user_id
+                user_id,
+                coin_id
               );
 
               if (updateUserWallet) {

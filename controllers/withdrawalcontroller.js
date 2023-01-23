@@ -188,7 +188,9 @@ const getAllDetailsOfcoin = async (req, res) => {
       for (let i in getDetails) {
         let coin = getDetails[i].coin_id;
         let balance = getDetails[i].balance;
-        details.push({ coin: coin, balance: balance });
+        let coinName = getDetails[i].coinName;
+
+        details.push({ coin: coin, balance: balance, coinName: coinName });
       }
       return res.status(200).send({ status: true, msg: details });
     }

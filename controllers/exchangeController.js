@@ -21,7 +21,7 @@ const exchange = async (req, res) => {
 
     let checkBalance = await userWalletModel.checkBalance(req.body);
 
-    if (checkBalance[0].balance > 0) {
+    if (checkBalance[0].balance >= amount) {
       let checkDataById = await userWalletModel.checkDataById1(user_id);
 
       if (checkDataById.length >= 0) {
@@ -102,7 +102,7 @@ const exchange = async (req, res) => {
     } else {
       return res
         .status(400)
-        .send({ status: false, msg: "balance should be greater than 0" });
+        .send({ status: false, msg: "balance should be equal or greater than amount" });
     }
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });
