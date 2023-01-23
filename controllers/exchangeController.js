@@ -17,7 +17,7 @@ const exchange = async (req, res) => {
     let amount = req.body.amount;
     let coin_id = req.body.coin_id;
     let coinId = req.body.buyCoin_Id;
-    let buyamount = req.body.buyamount;
+    let buyAmount = req.body.buyAmount;
 
     let checkBalance = await userWalletModel.checkBalance(req.body);
 
@@ -35,7 +35,7 @@ const exchange = async (req, res) => {
             let updatWallet = await userWalletModel.Balancebyid(
               user_id,
               coinId,
-              buyamount
+              buyAmount
             );
             if (updatWallet) {
               const insertIntoTransaction =
@@ -65,7 +65,7 @@ const exchange = async (req, res) => {
           let sell = await userWalletModel.Balancebyid1(
             user_id,
             coinId,
-            buyamount
+            buyAmount
           );
           if (sell) {
             let updatWallet = userWalletModel.updateBalancebyid1(

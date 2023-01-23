@@ -103,6 +103,8 @@ const webController = require("../controllers/webContentcontroller");
 const depositController = require("../controllers/depositController");
 const dashBoardController = require("../controllers/dashBoardController");
 const withdrawalcontroller = require("../controllers/withdrawalcontroller");
+
+const transactionController = require("../controllers/transactionController")
 // all schema
 const {
   registerUserSchema,
@@ -283,6 +285,9 @@ router.get(
   "/getAllDetailsOfcoin/:user_id",
   withdrawalcontroller.getAllDetailsOfcoin.bind()
 );
+
+router.get("/getAllTransactionDetail",transactionController.getAllTransactionDetail.bind())
+
 
 function ensureWebToken(req, res, next) {
   const x_access_token = req.headers["authorization"];
