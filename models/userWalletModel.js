@@ -52,15 +52,17 @@ class userWalletModel {
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
+
   updateBalancebyid1 = async (user_id, coin_id, amount) => {
-    let sql = `UPDATE userWallet SET balance=(balance+${amount})where user_id='${user_id}' and coin_id ='${coin_id}'`;
+    let sql = `UPDATE userWallet SET balance=(balance-${amount})where user_id='${user_id}' and coin_id ='${coin_id}'`;
     const [result, fields] = await promisePool.query(sql);
+    // console.log("222", sql)
     return result;
   };
   Balancebyid1 = async (user_id, coinId, buyamount) => {
-    let sql = `UPDATE userWallet SET balance=(balance-${buyamount})where user_id='${user_id}' and coin_id ='${coinId}'`;
+    let sql = `UPDATE userWallet SET balance=(balance+${buyamount})where user_id='${user_id}' and coin_id ='${coinId}'`;
     const [result, fields] = await promisePool.query(sql);
-
+// console.log("111", sql)
     return result;
   };
 
