@@ -89,8 +89,8 @@ const updateStatus = async (req, res) => {
     }
 
     let checkUserByid = await withdrawalModel.checkUserByid(req.body);
-
     if (checkUserByid.length > 0) {
+      console.log('checkUserByid',checkUserByid[0].id)
       const updateStatus = await withdrawalModel.updateStatus1(req.body);
 
       if (updateStatus) {

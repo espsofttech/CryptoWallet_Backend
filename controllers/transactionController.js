@@ -15,4 +15,23 @@ const getAllTransactionDetail = async (req, res) => {
   }
 };
 
-module.exports = { getAllTransactionDetail };
+
+const getAllWithdrawTransactionsbyuser = async (req, res) => {
+  try {
+    let user_id = req.params.user_id;
+
+    const getAllList = await transactionModel.getAllWithdrawTransactionsbyuser(user_id);
+    if (getAllList) {
+      return res.status(200).send({ status: true, data: getAllList });
+    } else {
+      return res.status(400).send({
+        status: false,
+        msg: "something went wrong",
+      });
+    }
+  } catch (err) {
+    return res.status(500).send({ status: false, error: err.message });
+  }
+};
+
+module.exports = { getAllTransactionDetail,getAllWithdrawTransactionsbyuser };

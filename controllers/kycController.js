@@ -11,15 +11,22 @@ const insertData = async (req, res) => {
         msg: `${errors.errors[0].msg}`,
       });
     }
-
+    console.log('req.data',req.body)
     let image = !req.files["image"] ? null : req.files["image"][0].filename;
     if (image) {
       req.body.image = image;
     } else {
       req.body.image = req.body.old_profile_pic;
     }
-    let bankStatement= !req.files["bankStatement"] ? null : req.files["bankStatement"][0].filename;
 
+
+    let BankStatement= !req.files["BankStatement"] ? null : req.files["BankStatement"][0].filename;
+    console.log(BankStatement);
+    if (!BankStatement || BankStatement == null || BankStatement == "null" || BankStatement == undefined || BankStatement == 'undefined') {
+      req.body.BankStatement = req.body.old_bankStatement;
+    } else {
+      req.body.BankStatement = BankStatement;
+    }
 
     let data = {
       user_id: req.body.user_id,
@@ -30,7 +37,7 @@ const insertData = async (req, res) => {
       image: req.body.image,
       doc_no: req.body.doc_no,
       Address: req.body.Address,
-      bankStatement:bankStatement,
+      BankStatement:req.body.BankStatement,
       phoneNo:req.body.phoneNo
 
     };

@@ -65,8 +65,8 @@ let bankUpload = upload.fields([
 let insertFiat = upload.fields([{ name: "upload_file", maxCount: 10 }]);
 
 let Uploads = upload.fields([
-  { name: "image", maxCount: 10 },
-  { name: "bankStatement", maxCount: 10 },
+  { name: "image", maxCount: 100 },
+  { name: "BankStatement", maxCount: 100 },
 ]);
 
 //  test--------
@@ -287,6 +287,9 @@ router.get(
 );
 
 router.get("/getAllTransactionDetail",transactionController.getAllTransactionDetail.bind())
+
+router.get("/getAllWithdrawTransactionsbyuser/:user_id",transactionController.getAllWithdrawTransactionsbyuser.bind())
+
 
 
 function ensureWebToken(req, res, next) {
