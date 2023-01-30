@@ -2,8 +2,7 @@ const kycModel = require("../models/kycModel");
 const { validationResult } = require("express-validator");
 
 const insertData = async (req, res) => {
-
-  try { 
+  try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(200).send({
@@ -18,7 +17,12 @@ const insertData = async (req, res) => {
     } else {
       req.body.image = req.body.old_profile_pic;
     }
-
+    let bankStatement = !req.files["bankStatement"]
+      ? null
+      : req.files["bankStatement"][0].filename;
+    let userImage = !req.files["userImage"]
+      ? null
+      : req.files["userImage"][0].filename;
 
     let BankStatement= !req.files["BankStatement"] ? null : req.files["BankStatement"][0].filename;
     console.log(BankStatement);
@@ -37,30 +41,29 @@ const insertData = async (req, res) => {
       image: req.body.image,
       doc_no: req.body.doc_no,
       Address: req.body.Address,
-      BankStatement:req.body.BankStatement,
-      phoneNo:req.body.phoneNo
-
+      bankStatement: bankStatement,
+      phoneNo: req.body.phoneNo,
+      userImage: userImage,
     };
 
-    const kycDetail = await kycModel.getKycDataById(req.body.user_id)
-    let insert = ''
+    const kycDetail = await kycModel.getKycDataById(req.body.user_id);
+   
+    let insert = "";
+
     if (kycDetail.length > 0) {
       insert = await kycModel.updateKycData(data);
-    }
-    else {
+    } else {
       insert = await kycModel.insertData(data);
     }
     if (insert) {
-      return res
-        .status(201)
-        .send({ status: true, msg: "KYC Updated!" });
+      return res.status(201).send({ status: true, msg: "KYC Updated!" });
     } else {
       return res
         .status(400)
         .send({ status: false, msg: "something went wrong" });
     }
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(500).send({ status: false, error: err.message });
   }
 };
