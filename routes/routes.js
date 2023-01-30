@@ -66,7 +66,7 @@ let insertFiat = upload.fields([{ name: "upload_file", maxCount: 10 }]);
 
 let Uploads = upload.fields([
   { name: "image", maxCount: 10 },
-  { name: "bankStatement", maxCount: 10 },
+  { name: "BankStatement", maxCount: 10 },
   { name: "userImage", maxCount: 10 }
 ]);
 
@@ -249,6 +249,8 @@ router.put("/updatefaqDetails/:id", FAQcontroller.updatefaqDetails.bind());
 router.post("/insertDetails", webController.insertDetails.bind());
 router.delete("/deleteDetails/:id", webController.deleteDetails.bind());
 router.get("/getDetails", webController.getDetails.bind());
+router.get("/getDetails1", webController.getDetails1.bind());
+
 router.put("/updateDetails/:id", webController.updateDetails.bind());
 
 //  deposit fiat
@@ -291,7 +293,7 @@ router.get(
   withdrawalcontroller.getAllDetailsOfcoin.bind()
 );
 
-router.get("/getAllTransactionDetail",transactionController.getAllTransactionDetail.bind())
+router.get("/getAllTransactionDetail/:user_id",transactionController.getAllTransactionDetail.bind())
 
 router.get("/getAllWithdrawTransactionsbyuser/:user_id",transactionController.getAllWithdrawTransactionsbyuser.bind())
 

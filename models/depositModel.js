@@ -26,7 +26,7 @@ class depositModel {
   // };
   
   getAllDetail = async () => {
-    let sql = `SELECT depositFiat.user_id, depositFiat. coin_id, depositFiat.balance, depositFiat.status, depositFiat.bank_name, depositFiat.transaction_id, depositFiat. admin_bank_id , depositFiat.upload_file, depositFiat. created_At, users.first_name as userName ,coins.coinName ,Bankdetail.bank_name as admin_bank_name from depositFiat LEFT JOIN users ON depositFiat.user_id = users.id LEFT JOIN coins ON depositFiat.coin_id = coins.id LEFT JOIN Bankdetail ON depositFiat.admin_bank_id = Bankdetail.id `;
+    let sql = `SELECT depositFiat.user_id, depositFiat. coin_id, depositFiat.balance,depositFiat.id, depositFiat.status, depositFiat.bank_name, depositFiat.transaction_id, depositFiat. admin_bank_id , depositFiat.upload_file, depositFiat. created_At, users.first_name as userName ,coins.coinName ,Bankdetail.bank_name as admin_bank_name from depositFiat LEFT JOIN users ON depositFiat.user_id = users.id LEFT JOIN coins ON depositFiat.coin_id = coins.id LEFT JOIN Bankdetail ON depositFiat.admin_bank_id = Bankdetail.id ORDER BY depositFiat.id DESC `;
     const [result, fields] = await promisePool.query(sql);
     return result;
   };

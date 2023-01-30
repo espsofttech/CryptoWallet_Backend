@@ -72,7 +72,7 @@ const login = async (req, res) => {
         // if(checkEmail[0].id == 1){
         //   return res
         //   .status(400)
-        //   .send({ status: false, msg: "we dont have user with this email" });
+        //   .send({ status: false, msg: "We dont have user with this email" });
 
         // }
 
@@ -118,7 +118,7 @@ const login = async (req, res) => {
         }
         return res.status(201).send({
           status: true,
-          msg: " login success",
+          msg: "Login successful",
           token: Token,
           data: checkEmail[0],
         });
@@ -126,7 +126,7 @@ const login = async (req, res) => {
     } else {
       return res
         .status(400)
-        .send({ status: false, msg: "we dont have user with this email" });
+        .send({ status: false, msg: "We dont have user with this email" });
     }
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });
@@ -238,7 +238,7 @@ const forgetPassword = async (req, res) => {
       if (mailmsg) {
         return res.status(200).send({
           status: true,
-          msg: "please check your email for link to reset your password",
+          msg: "Please check your email for link to reset your password",
         });
       } else {
         return res.status(400).send({
@@ -249,7 +249,7 @@ const forgetPassword = async (req, res) => {
     } else {
       return res
         .status(400)
-        .send({ status: false, msg: "email is not registered" });
+        .send({ status: false, msg: "Email is not registered" });
     }
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });
@@ -325,7 +325,7 @@ const verifyAccount = async (req, res) => {
             );
             return res
               .status(200)
-              .send({ status: true, msg: "account successfully verified" });
+              .send({ status: true, msg: "Account successfully verified" });
           } else {
             return res.status({ status: false, msg: "something went wrong" });
           }

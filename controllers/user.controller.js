@@ -60,7 +60,7 @@ const updateUserById = async (req, res) => {
     if (updateUser) {
       return res
         .status(201)
-        .send({ status: true, msg: "user details updated successfully" });
+        .send({ status: true, msg: "User details updated successfully" });
     } else {
       return res
         .status(400)

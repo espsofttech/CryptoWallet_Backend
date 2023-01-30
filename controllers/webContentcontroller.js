@@ -66,6 +66,23 @@ const getDetails = async (req, res) => {
   }
 };
 
+const getDetails1 = async (req, res) => {
+  try {
+    const getAllDetails = await webContentModel.getDetails();
+    if (getAllDetails) {
+      return res
+        .status(200)
+        .send({ status: true, msg: "successfully", data: getAllDetails[0] });
+    } else {
+      return res
+        .status(400)
+        .send({ status: false, msg: "something went wrong" });
+    }
+  } catch (err) {
+    return res.status(500).send({ status: false, error: err.message });
+  }
+};
+
 const updateDetails = async (req, res) => {
 
   try {
@@ -83,7 +100,7 @@ const updateDetails = async (req, res) => {
     if (update) {
       return res
         .status(201)
-        .send({ status: true, msg: "data updated successfully" });
+        .send({ status: true, msg: "Data updated successfully" });
     } else {
       return res
         .status(400)
@@ -93,4 +110,4 @@ const updateDetails = async (req, res) => {
     return res.status(500).send({ status: false, error: err.message });
   }
 };
-module.exports = { insertDetails, deleteDetails, getDetails, updateDetails };
+module.exports = { insertDetails, deleteDetails, getDetails,getDetails1, updateDetails };

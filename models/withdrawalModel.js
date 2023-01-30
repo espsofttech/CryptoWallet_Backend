@@ -26,7 +26,7 @@ class withdrawalModel{
     }
 
     getAllList= async()=>{
-        let sql = `SELECT withdrawList.user_id,withdrawList.coin_id,withdrawList.id,withdrawList.createdAt,withdrawList.status,withdrawList.withdrawal_Address,withdrawList.amount,users.first_name AS userName,coins.coinName FROM  withdrawList LEFT JOIN users ON withdrawList.user_id = users.id LEFT JOIN coins ON withdrawList.coin_id= coins.id`;
+        let sql = `SELECT withdrawList.user_id,withdrawList.coin_id,withdrawList.id,withdrawList.createdAt,withdrawList.status,withdrawList.withdrawal_Address,withdrawList.amount,users.first_name AS userName,coins.coinName FROM withdrawList LEFT JOIN users ON withdrawList.user_id = users.id LEFT JOIN coins ON withdrawList.coin_id= coins.id ORDER BY withdrawList.id DESC`;
         const [result, fields] = await promisePool.query(sql);
         return result;
     }

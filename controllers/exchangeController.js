@@ -47,7 +47,7 @@ const exchange = async (req, res) => {
               return res.status(201).send({
                 status: true,
                 msg: "successfully",
-                data: "data inserted successfully in transaction model",
+                data: "Data inserted successfully in transaction model",
               });
             } else {
               return res

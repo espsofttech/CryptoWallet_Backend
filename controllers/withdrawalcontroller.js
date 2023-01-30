@@ -32,7 +32,7 @@ const withdrawcrypto = async (req, res) => {
           if (updateStatus) {
             return res.status(201).send({
               status: true,
-              msg: "withdraw successfull and data in withdraw list inserted",
+              msg: "Withdraw successfull and data in withdraw list inserted",
             });
           } else {
             return res.status(400).send({
@@ -54,7 +54,7 @@ const withdrawcrypto = async (req, res) => {
     } else {
       return res.status(400).send({
         status: false,
-        msg: "you dont have sufficient amout to withdraw",
+        msg: "You dont have sufficient amout to withdraw",
       });
     }
   } catch (err) {

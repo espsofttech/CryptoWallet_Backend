@@ -42,7 +42,7 @@ const updateIdentity = async (req, res) => {
     if (update) {
       return res
         .status(201)
-        .send({ status: true, msg: "data updated successfully" });
+        .send({ status: true, msg: "Data updated successfully" });
     } else {
       return res
         .status(400)

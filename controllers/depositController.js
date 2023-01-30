@@ -31,7 +31,7 @@ const depositFiat = async (req, res) => {
     if (insertFiat) {
       return res
         .status(201)
-        .send({ status: true, msg: "data inserted successfully" });
+        .send({ status: true, msg: "Data inserted successfully" });
     }
   } catch (err) {
     return res.status(500).send({ status: false, Error: err.message });

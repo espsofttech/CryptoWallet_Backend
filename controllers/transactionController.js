@@ -2,7 +2,9 @@ const transactionModel = require("../models/transactionModel");
 
 const getAllTransactionDetail = async (req, res) => {
   try {
-    const getAllDetails = await transactionModel.getAllTransactionDetail();
+    let user_id = req.params.user_id;
+
+    const getAllDetails = await transactionModel.getAllTransactionDetail(user_id);
     if (getAllDetails.length > 0) {
       return res
         .status(200)
