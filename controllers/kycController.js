@@ -62,7 +62,7 @@ const insertData = async (req, res) => {
     } else {
       return res
         .status(400)
-        .send({ status: false, msg: "something went wrong" });
+        .send({ status: false, msg: "Something went wrong" });
     }
   } catch (err) {
     console.log(err);
@@ -80,7 +80,7 @@ const getAllkyc = async (req, res) => {
     } else {
       return res
         .status(400)
-        .send({ status: false, msg: "something went wrong" });
+        .send({ status: false, msg: "Something went wrong" });
     }
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });
@@ -102,7 +102,7 @@ const getKycById = async (req, res) => {
     } else {
       return res
         .status(400)
-        .send({ status: false, msg: "something went wrong" });
+        .send({ status: false, msg: "Something went wrong" });
     }
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });
@@ -127,7 +127,7 @@ const UpdateSuccessKyc = async (req, res) => {
     } else {
       return res
         .status(400)
-        .send({ status: false, msg: "something went wrong try again later" });
+        .send({ status: false, msg: "Something went wrong try again later" });
     }
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });
@@ -152,7 +152,7 @@ const rejectKyc = async (req, res) => {
     } else {
       return res
         .status(400)
-        .send({ status: false, msg: "something went wrong try again later" });
+        .send({ status: false, msg: "Something went wrong try again later" });
     }
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });

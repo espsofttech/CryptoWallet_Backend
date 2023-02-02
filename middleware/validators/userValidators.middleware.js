@@ -18,7 +18,7 @@ exports.registerUserSchema = [
     .not()
     .isEmpty()
     .custom((value, { req }) => value === req.body.password)
-    .withMessage("password and confirm password does not match"),
+    .withMessage("Password and confirm password does not match"),
 ];
 
 exports.loginUserSchema = [
@@ -56,7 +56,7 @@ exports.changePasswordSchema = [
     .not()
     .isEmpty()
     .custom((value, { req }) => value === req.body.password)
-    .withMessage("password and confirm password does not match"),
+    .withMessage("Password and confirm password does not match"),
 ];
 
 exports.resetPasswordSchema = [

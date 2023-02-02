@@ -91,7 +91,8 @@ const getBankDetailsByID = async (req, res) => {
           .status(400)
           .send({ status: false, msg: "something went wrong" });
       }
-    } else {
+    }
+     else {
       return res
         .status(404)
         .send({ status: false, msg: "no details found by this user id" });

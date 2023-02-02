@@ -58,10 +58,17 @@ let profileUpload = upload.fields([{ name: "image", maxCount: 10 }]);
 // let profileUploadData = upload.fields([{ name: "image", maxCount: 10 }]);
 
 let bankUpload = upload.fields([
-  { name: "GSTimage", maxCount: 10 },
+  { name: "GSTImage", maxCount: 10 },
   { name: "cancelledChequeImage", maxCount: 10 },
   { name: "bankStatementImage", maxCount: 10 },
 ]);
+
+let bankUploadData = upload.fields([
+  { name: "GSTImage", maxCount: 10 },
+  { name: "cancelledChequeImage", maxCount: 20 },
+  { name: "bankStatementImage", maxCount: 30 },
+]);
+
 let insertFiat = upload.fields([{ name: "upload_file", maxCount: 10 }]);
 
 let Uploads = upload.fields([
@@ -215,7 +222,7 @@ router.get(
 router.get("/getAllBankDetails", bankcontroller.getAllBankDetails.bind());
 router.put(
   "/updateBankDetails/:user_id",
-  bankUpload,
+  bankUploadData,
   bankcontroller.updateDetails.bind()
 );
 
@@ -262,6 +269,9 @@ router.put(
   "/updateStatusDetails",
   depositController.updateStatusDetails.bind()
 );
+
+router.get("/getAllDepositTransactionsbyuser/:user_id",depositController.getAllDepositTransactionsbyuser.bind())
+
 // buy and sell exchange
 router.post("/exchange", exchangeController.exchange.bind());
 

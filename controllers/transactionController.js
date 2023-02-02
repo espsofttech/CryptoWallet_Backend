@@ -28,7 +28,7 @@ const getAllWithdrawTransactionsbyuser = async (req, res) => {
     } else {
       return res.status(400).send({
         status: false,
-        msg: "something went wrong",
+        msg: "Something went wrong",
       });
     }
   } catch (err) {

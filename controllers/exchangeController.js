@@ -47,22 +47,22 @@ const exchange = async (req, res) => {
               return res.status(201).send({
                 status: true,
                 msg: "successfully",
-                data: "Data inserted successfully in transaction model",
+                data: "Order placed successfully",
               });
             } else {
               return res
                 .status(400)
-                .send({ status: false, msg: "something went wrong" });
+                .send({ status: false, msg: "Something went wrong" });
             }
           } else {
             return res
               .status(400)
-              .send({ status: false, msg: "something went wrong" });
+              .send({ status: false, msg: "Something went wrong" });
           }
         } else {
           return res
             .status(400)
-            .send({ status: false, msg: "something went wrong" });
+            .send({ status: false, msg: "Something went wrong" });
         }
         // }
 
@@ -108,24 +108,24 @@ const exchange = async (req, res) => {
         //       } else {
         //         return res
         //           .status(400)
-        //           .send({ status: false, msg: "something went wrong" });
+        //           .send({ status: false, msg: "Something went wrong" });
         //       }
         //     } else {
         //       return res
         //         .status(400)
-        //         .send({ status: false, msg: "something went wrong" });
+        //         .send({ status: false, msg: "Something went wrong" });
         //     }
         //   }
         // }
       } else {
         return res
           .status(404)
-          .send({ status: false, msg: "no user found by this id " });
+          .send({ status: false, msg: "No user found by this id " });
       }
     } else {
       return res
         .status(400)
-        .send({ status: false, msg: "balance should be equal or greater than amount" });
+        .send({ status: false, msg: "Balance should be equal or greater than amount" });
     }
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });

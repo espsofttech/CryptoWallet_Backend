@@ -17,7 +17,7 @@ const insertfaqDetails = async (req, res) => {
     } else {
       return res
         .status(400)
-        .send({ status: false, msg: "something went wrong" });
+        .send({ status: false, msg: "Something went wrong" });
     }
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });
@@ -37,7 +37,7 @@ const deletefaqDetails = async (req, res) => {
       } else {
         return res
           .status(400)
-          .send({ status: false, msg: "something went wrong" });
+          .send({ status: false, msg: "Something went wrong" });
       }
     } else {
       return res
@@ -59,7 +59,7 @@ const getfaqDetails = async (req, res) => {
     } else {
       return res
         .status(400)
-        .send({ status: false, msg: "something went wrong" });
+        .send({ status: false, msg: "Something went wrong" });
     }
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });
@@ -86,7 +86,7 @@ const updatefaqDetails = async (req, res) => {
     } else {
       return res
         .status(400)
-        .send({ status: false, msg: "something went wrong please try later" });
+        .send({ status: false, msg: "Something went wrong please try later" });
     }
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });
