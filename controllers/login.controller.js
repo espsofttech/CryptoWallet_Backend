@@ -188,7 +188,7 @@ async function web3fun(symbol) {
         publicKey: "",
       };
     }
-  } catch (err) {}
+  } catch (err) { }
 }
 async function encriptedKey(pvkey, hash) {
   var private_key = pvkey;
@@ -227,7 +227,7 @@ const forgetPassword = async (req, res) => {
     <h4>Please <a href='${config.mailUrl}resetpassword/${Token}'>Click here </a> to Reset  your Password</h4>
     </div>`;
       let headerMSG = ``;
-      let headerMSG1 = `crypto wallet exchange is delighted to have you  ! `;
+      let headerMSG1 = `Crypto wallet exchange is delighted to have you  ! `;
       let mailMsg = emailActivity.Activity(
         req.body.email,
         "Reset Password Link",
@@ -281,7 +281,7 @@ const changePassword = async (req, res) => {
     if (updatePass) {
       return res
         .status(201)
-        .send({ status: true, msg: " password updated successfully" });
+        .send({ status: true, msg: " Password updated successfully" });
     } else {
       return res.status(400).send({
         status: false,
@@ -306,7 +306,7 @@ const verifyAccount = async (req, res) => {
           if (err) {
             return res
               .status(400)
-              .send({ status: false, msg: "incorrect or expired link" });
+              .send({ status: false, msg: "Incorrect or expired link" });
           }
           const verify = await userModel.verifyAccount(decodedToken.email);
           if (verify) {
@@ -371,7 +371,7 @@ const ResetPassword = async (req, res) => {
         if (ResetPassword) {
           return res
             .status(201)
-            .send({ status: true, msg: "password reset successfull" });
+            .send({ status: true, msg: "Password reset successfull" });
         } else {
           return res.status(400).send({
             status: false,
