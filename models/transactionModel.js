@@ -31,9 +31,31 @@ class transactionModel {
     return result;
   }
 
+  getQr = async (user_id) => {
+    let sql = `Select googleAuthCode,enableTwoFactor,QR_code from users where id =${user_id}`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  }
 
- 
+  updateUsersAuth = async (enableTwoFactor, user_id) => {
+    let sql = `update users SET enableTwoFactor=${enableTwoFactor} where id=${user_id}`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  }
 
+  userActivity = async (user_id) => {
+    let sql = `select act.id as activity_id,act.description,act.user_id,act.is_read,act.datetime from Activity as act where user_id=${user_id} ORDER by id DESC`;
+    const [result, fields] = await promisePool.query(sql);
+
+    let sql2 = `select count(id) as cnt from Activity where user_id=${user_id} and is_read=0`;
+    const [result2, fields2] = await promisePool.query(sql2);
+
+    let res={
+      result : result,
+      result2 : result2 
+    }
+    return res;
+  }
 
 }
 module.exports = new transactionModel();

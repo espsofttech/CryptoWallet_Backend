@@ -25,6 +25,7 @@ const login = async (req, res) => {
     }
 
     let checkEmail = await userModel.getUserEmail(req.body.email);
+
     const Token = jwt.sign(
       {
         email: req.body.email,
@@ -69,13 +70,6 @@ const login = async (req, res) => {
           });
         }
 
-        // if(checkEmail[0].id == 1){
-        //   return res
-        //   .status(400)
-        //   .send({ status: false, msg: "We dont have user with this email" });
-
-        // }
-
         const coin = await coinsModel.getCoinsDetails();
 
         for (let i in coin) {
@@ -112,10 +106,13 @@ const login = async (req, res) => {
                   : "",
                 publicKey: wallet.publicKey,
               };
+
             }
             let create = await userWalletModel.insertDetails(userwallet);
+
           }
         }
+       
         return res.status(201).send({
           status: true,
           msg: "Login successful",
@@ -123,7 +120,8 @@ const login = async (req, res) => {
           data: checkEmail[0],
         });
       }
-    } else {
+    }
+    else {
       return res
         .status(400)
         .send({ status: false, msg: "We dont have user with this email" });
@@ -279,6 +277,12 @@ const changePassword = async (req, res) => {
     const updatePass = await userModel.updatePassword(hash, req.body.email);
 
     if (updatePass) {
+      var userActivity = {
+        user_id: req.body.id,
+        description: 'Password Changed!!'
+      }
+      console.log('userActivity:', userActivity)
+      let activity = await userWalletModel.insertActivity(userActivity);
       return res
         .status(201)
         .send({ status: true, msg: " Password updated successfully" });

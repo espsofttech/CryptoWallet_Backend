@@ -25,7 +25,6 @@ const exchange = async (req, res) => {
       let checkDataById = await userWalletModel.checkDataById1(user_id);
 
       if (checkDataById.length >= 0) {
-        // if (type == 1) {
         console.log('user_idin_idamount', user_id,
           coin_id,
           amount)
@@ -44,6 +43,12 @@ const exchange = async (req, res) => {
             const insertIntoTransaction =
               await transactionModel.insertDetails(req.body);
             if (insertIntoTransaction) {
+              var userActivity = {
+                user_id: user_id,
+                description: type == 1 ? 'Buy Successfull!!' : 'Sell Successfull!!'
+              }
+              console.log('userActivity:', userActivity)
+              let activity = await userWalletModel.insertActivity(userActivity);
               return res.status(201).send({
                 status: true,
                 msg: "successfully",
@@ -64,59 +69,6 @@ const exchange = async (req, res) => {
             .status(400)
             .send({ status: false, msg: "Something went wrong" });
         }
-        // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // else if (type == 2) {
-        //   let sell = await userWalletModel.Balancebyid1(
-        //     user_id,
-        //     coinId,
-        //     buyAmount
-        //   );
-        //   if (sell) {
-        //     let updatWallet = userWalletModel.updateBalancebyid1(
-        //       user_id,
-        //       coin_id,
-        //       amount
-        //     );
-        //     if (updatWallet) {
-        //       const insertIntoTransaction =
-        //         await transactionModel.insertDetails(req.body);
-        //       if (insertIntoTransaction) {
-        //         return res.status(201).send({
-        //           status: true,
-        //           msg: "balance deducted successfully",
-        //           data: "data inserted successfully in transaction model",
-        //         });
-        //       } else {
-        //         return res
-        //           .status(400)
-        //           .send({ status: false, msg: "Something went wrong" });
-        //       }
-        //     } else {
-        //       return res
-        //         .status(400)
-        //         .send({ status: false, msg: "Something went wrong" });
-        //     }
-        //   }
-        // }
       } else {
         return res
           .status(404)
@@ -125,7 +77,7 @@ const exchange = async (req, res) => {
     } else {
       return res
         .status(400)
-        .send({ status: false, msg: "Balance should be equal or greater than amount" });
+        .send({ status: false, msg: "Insufficient balance" });
     }
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });

@@ -34,15 +34,23 @@ class kycModel {
     return result;
   };
 
-  UpdateSuccessKyc = async (id) => {
-    let sql = `UPDATE KYC SET kyc_status =2 WHERE id='${id}'`;
+  UpdateSuccessKyc = async (user_id) => {
+    let sql = `UPDATE KYC SET kyc_status =2 WHERE user_id='${user_id}'`;
 
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
 
-  rejectKyc = async (id) => {
-    let sql = `UPDATE KYC SET kyc_status =3 WHERE id='${id}'`;
+  updatePaymentModule = async (user_id, depositFiat, depositCrypto) => {
+    console.log(user_id, depositFiat, depositCrypto);
+    let sql = `UPDATE users SET depositFiat = ${depositFiat == '' ? null : depositFiat},depositCrypto=${depositCrypto == '' ? null : depositCrypto} WHERE id='${user_id}'`;
+    console.log(sql);
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
+
+  rejectKyc = async (user_id) => {
+    let sql = `UPDATE KYC SET kyc_status =3 WHERE user_id='${user_id}'`;
 
     const [result, fields] = await promisePool.query(sql);
     return result;
@@ -60,9 +68,9 @@ class kycModel {
 
   updateKycData = async (data) => {
     let sql = `UPDATE KYC SET user_id = '${data.user_id}',user_name = '${data.user_name}',dob = '${data.dob}',email= '${data.email}',identity_proof_id = '${data.identity_proof_id}',image = '${data.image}',doc_no = '${data.doc_no}',kyc_status= '1' , Address='${data.Address}',BankStatement='${data.BankStatement}',phoneNo='${data.phoneNo}',userImage='${data.userImage}'WHERE user_id = '${data.user_id}'`;
-   
+
     const [result, fields] = await promisePool.query(sql);
-  
+
     return result;
   };
 }

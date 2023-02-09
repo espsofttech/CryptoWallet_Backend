@@ -18,10 +18,11 @@ const depositFiat = async (req, res) => {
     const data = {
       user_id: req.body.user_id,
       coin_id: req.body.coin_id,
-
+      type:req.body.type,
       balance: req.body.balance,
       status: req.body.status,
       bank_name: req.body.bank_name,
+      crypto_address: req.body.crypto_address,
       transaction_id: req.body.transaction_id,
       admin_bank_id: req.body.admin_bank_id,
       upload_file: upload_file,
@@ -29,6 +30,12 @@ const depositFiat = async (req, res) => {
 
     const insertFiat = await depositModel.insertFiat(data);
     if (insertFiat) {
+      var userActivity = {
+        user_id: req.body.user_id,
+        description: 'Deposit Successfully Added!!'
+      }
+      console.log('userActivity:', userActivity)
+      let activity = await userWalletModel.insertActivity(userActivity);
       return res
         .status(201)
         .send({ status: true, msg: "Data inserted successfully" });
@@ -37,6 +44,7 @@ const depositFiat = async (req, res) => {
     return res.status(500).send({ status: false, Error: err.message });
   }
 };
+
 
 const getAllfiatDetails = async (req, res) => {
   try {
@@ -64,7 +72,7 @@ const updateStatusDetails = async (req, res) => {
         msg: `${errors.errors[0].msg}`,
       });
     }
-
+    let id = req.body.id
     let user_id = req.body.user_id;
 
     let coin_id = req.body.coin_id;
@@ -84,12 +92,12 @@ const updateStatusDetails = async (req, res) => {
             user_id
           );
           if (checkUserWalletById.length > 0) {
-            const updateStatus = await depositModel.updateStatus(user_id);
+            const updateStatus = await depositModel.updateStatus(req.body.id,user_id);
             if (updateStatus) {
-            const checkpreviousBalance = await depositModel.checkpreviousBalance(user_id,coin_id);
+              const checkpreviousBalance = await depositModel.checkpreviousBalance(user_id, coin_id);
 
               let previousbalance = checkpreviousBalance[0].balance;
-              console.log('previousbalance',previousbalance)
+              console.log('previousbalance', previousbalance)
               const updateUserWallet = await userWalletModel.updateBalance(
                 previousbalance,
                 balance,
@@ -98,6 +106,12 @@ const updateStatusDetails = async (req, res) => {
               );
 
               if (updateUserWallet) {
+                var userActivity = {
+                  user_id:  req.body.user_id,
+                  description: 'Deposit Accepted!!'
+                }
+                console.log('userActivity:', userActivity)
+                let activity = await userWalletModel.insertActivity(userActivity);
                 return res.status(201).send({
                   status: true,
                   msg: "balance updated and status approved",
@@ -118,9 +132,16 @@ const updateStatusDetails = async (req, res) => {
               msg: "no details found in user wallet by this id",
             });
           }
-        } else if (statusData == 2) {
+        } 
+        else if (statusData == 2) {
           const rejectStatus = await depositModel.updateFiatStatus(user_id);
           if (rejectStatus) {
+            var userActivity = {
+              user_id:  req.body.user_id,
+              description: 'Deposit Rejected!!'
+            }
+            console.log('userActivity:', userActivity)
+            let activity = await userWalletModel.insertActivity(userActivity);
             return res
               .status(201)
               .send({ status: true, msg: "status is rejected" });
@@ -164,4 +185,4 @@ const getAllDepositTransactionsbyuser = async (req, res) => {
   }
 };
 
-module.exports = { depositFiat, getAllfiatDetails, updateStatusDetails ,getAllDepositTransactionsbyuser};
+module.exports = { depositFiat, getAllfiatDetails, updateStatusDetails, getAllDepositTransactionsbyuser };

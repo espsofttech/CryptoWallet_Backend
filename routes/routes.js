@@ -199,9 +199,9 @@ router.get("/getAllKycDetail", kycController.getAllkyc.bind());
 router.get("/getKycDetailById/:id", kycController.getKycById.bind());
 
 // update kyc approval
-router.put("/successKyc/:id", kycController.UpdateSuccessKyc.bind());
+router.post("/successKyc", kycController.UpdateSuccessKyc.bind());
 // reject kyc approval
-router.put("/rejectKyc/:id", kycController.rejectKyc.bind());
+router.put("/rejectKyc/:user_id", kycController.rejectKyc.bind());
 //  bank details
 router.post(
   "/insertBankDetails/:user_id",
@@ -278,6 +278,9 @@ router.post("/exchange", exchangeController.exchange.bind());
 //dashBoardData
 router.get("/dashBoardData", dashBoardController.getdashBoardData.bind());
 
+router.get("/getdashBoardDataCountUser/:user_id", dashBoardController.getdashBoardDataCountUser.bind());
+
+
 // withdraw  btc
 router.post("/withdrawcrypto", withdrawalcontroller.withdrawcrypto.bind());
 // get details
@@ -307,7 +310,13 @@ router.get("/getAllTransactionDetail/:user_id",transactionController.getAllTrans
 
 router.get("/getAllWithdrawTransactionsbyuser/:user_id",transactionController.getAllWithdrawTransactionsbyuser.bind())
 
+router.get('/getQR/:user_id',transactionController.getQR.bind());
+router.post('/twoAuthenticationVerify',transactionController.twoAuthenticationVerify.bind());
+router.get('/userActivity/:user_id',transactionController.userActivity.bind());
 
+router.post("/insertAdminBank", bankcontroller.insertAdminBank.bind());
+router.delete("/deleteAdminBank/:id", bankcontroller.deleteAdminBank.bind());
+router.get("/getAdminBank", bankcontroller.getAdminBank.bind());
 
 function ensureWebToken(req, res, next) {
   const x_access_token = req.headers["authorization"];

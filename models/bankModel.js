@@ -23,21 +23,35 @@ class bankModel {
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
+
+  checkAdminByid = async (id) => {
+    let sql = `SELECT * FROM  admin_bank WHERE id='${id}'`;
+    const [result, fields] = await promisePool.query(sql);
+
+    return result;
+  };
+
   deleteDetails = async (user_id) => {
     let sql = `DELETE FROM  Bankdetail WHERE user_id='${user_id}'`;
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
 
+  deleteAdminDetails = async (id) => {
+    let sql = `DELETE FROM admin_bank WHERE id ='${id}'`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
+
   getBankDetails = async (user_id) => {
     let sql = `SELECT Bankdetail.user_id,Bankdetail.bank_account_holder_name,
-    Bankdetail.branchName,Bankdetail.id,Bankdetail.AccountNumber,Bankdetail.accountType,Bankdetail.GSTImage,Bankdetail.cancelledChequeImage,Bankdetail.bankStatementImage,Bankdetail.ifsc_code,Bankdetail.company_name,Bankdetail.bank_name,Bankdetail.panCardno,users.first_name,users.email,Account_Type.AccountName FROM Bankdetail  LEFT JOIN users ON Bankdetail.user_id=users.id LEFT JOIN Account_Type ON Bankdetail.accountType =Account_Type.id where user_id = '${user_id}'`;
+    Bankdetail.branchName,Bankdetail.id,Bankdetail.AccountNumber,Bankdetail.is_admin,Bankdetail.accountType,Bankdetail.GSTImage,Bankdetail.cancelledChequeImage,Bankdetail.bankStatementImage,Bankdetail.ifsc_code,Bankdetail.company_name,Bankdetail.bank_name,Bankdetail.panCardno,users.first_name,users.email,Account_Type.AccountName FROM Bankdetail  LEFT JOIN users ON Bankdetail.user_id=users.id LEFT JOIN Account_Type ON Bankdetail.accountType =Account_Type.id where user_id = '${user_id}'`;
 
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
   getAllDetails = async () => {
-    let sql = `SELECT Bankdetail.user_id,Bankdetail.bank_account_holder_name,Bankdetail.accountType, Bankdetail.branchName,Bankdetail.AccountNumber,Bankdetail.ifsc_code,Bankdetail.bank_name,Bankdetail.id,Bankdetail.panCardno,users.first_name ,users.email,Account_Type.AccountName FROM Bankdetail LEFT JOIN users ON Bankdetail.user_id=users.id LEFT JOIN Account_Type ON Bankdetail.accountType =Account_Type.id ORDER BY Bankdetail.id DESC`;
+    let sql = `SELECT Bankdetail.user_id,Bankdetail.is_admin,Bankdetail.bank_account_holder_name,Bankdetail.accountType, Bankdetail.branchName,Bankdetail.AccountNumber,Bankdetail.ifsc_code,Bankdetail.bank_name,Bankdetail.id,Bankdetail.panCardno,users.first_name ,users.email,Account_Type.AccountName FROM Bankdetail LEFT JOIN users ON Bankdetail.user_id=users.id LEFT JOIN Account_Type ON Bankdetail.accountType =Account_Type.id ORDER BY Bankdetail.id DESC`;
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
@@ -60,5 +74,20 @@ class bankModel {
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
+
+
+  insertDetails = async (data) => {
+    let sql = `INSERT INTO admin_bank(user_id,bank_account_holder_name,bank_name,branchName,AccountNumber,ifsc_code,crypto_address,type)VALUES('${data.user_id}','${data.bank_account_holder_name}','${data.bank_name}','${data.branchName}','${data.AccountNumber}','${data.ifsc_code}','${data.crypto_address}','${data.type}')`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
+
+
+  getDetails = async () => {
+    let sql = `SELECT * FROM admin_bank order by id desc`;
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
+
 }
 module.exports = new bankModel();

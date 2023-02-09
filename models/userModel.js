@@ -14,12 +14,13 @@ const promisePool = pool.promise();
 class userModel {
   getUserEmail = async (email) => {
     let sql = `SELECT * FROM users where email ='${email}'`;
+    console.log(sql); 
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
 
   saveUserDetails = async (data) => {
-    let sql = `INSERT INTO users (first_name , last_name , email, password,image) VALUES ('${data.first_name}','${data.last_name}','${data.email}','${data.password}','${data.image}')`;
+    let sql = `INSERT INTO users (first_name , last_name , email, password,image,googleAuthCode,QR_code) VALUES ('${data.first_name}','${data.last_name}','${data.email}','${data.password}','${data.image}','${data.googleAuthCode}','${data.QR_code}')`;
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
@@ -41,7 +42,7 @@ class userModel {
     return result;
   };
   getAllDetail = async () => {
-    let sql = `SELECT * FROM users ORDER BY id desc`;
+    let sql = `SELECT us.id,us.first_name,us.last_name,us.email,us.password,us.image,KYC.kyc_status,us.is_email_verify,us.is_Block,us.created_At,us.Description,us.is_admin,us.googleAuthCode,us.enableTwoFactor,us.QR_code,us.depositFiat,admin_bank.bank_name,au.crypto_address,us.depositCrypto FROM users AS us LEFT JOIN KYC ON us.id = KYC.user_id LEFT JOIN admin_bank ON us.depositFiat = admin_bank.id LEFT JOIN admin_bank as au ON us.depositCrypto = au.id ORDER BY id DESC`;
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
@@ -51,7 +52,7 @@ class userModel {
     return result;
   };
   getUserById = async (id) => {
-    let sql = `SELECT * FROM users where id='${id}'`;
+    let sql = `SELECT us.id,us.first_name,us.last_name,us.email,us.password,us.image,KYC.kyc_status,us.is_email_verify,us.is_Block,us.created_At,us.Description,us.is_admin,us.googleAuthCode,us.enableTwoFactor,us.QR_code,us.depositFiat,admin_bank.bank_name,au.crypto_address,us.depositCrypto FROM users AS us LEFT JOIN KYC ON us.id = KYC.user_id LEFT JOIN admin_bank ON us.depositFiat = admin_bank.id LEFT JOIN admin_bank as au ON us.depositCrypto = au.id WHERE us.id=${id} ORDER BY id DESC`;
     const [result, fields] = await promisePool.query(sql);
     return result;
   };

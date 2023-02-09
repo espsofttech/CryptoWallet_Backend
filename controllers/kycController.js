@@ -1,5 +1,6 @@
 const kycModel = require("../models/kycModel");
 const { validationResult } = require("express-validator");
+const userWalletModel = require("../models/userWalletModel");
 
 const insertData = async (req, res) => {
   try {
@@ -58,6 +59,12 @@ const insertData = async (req, res) => {
       insert = await kycModel.insertData(data);
     }
     if (insert) {
+      var userActivity = {
+        user_id: req.body.user_id,
+        description: 'KYC Updated!!'
+      }
+      console.log('userActivity:', userActivity)
+      let activity = await userWalletModel.insertActivity(userActivity);
       return res.status(201).send({ status: true, msg: "KYC Updated!" });
     } else {
       return res
@@ -110,6 +117,7 @@ const getKycById = async (req, res) => {
 };
 
 const UpdateSuccessKyc = async (req, res) => {
+  console.log('UpdateSuccessKyc')
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -118,9 +126,22 @@ const UpdateSuccessKyc = async (req, res) => {
         msg: `${errors.errors[0].msg}`,
       });
     }
-    let id = req.params.id;
-    const update = await kycModel.UpdateSuccessKyc(id);
+    let user_id = req.body.user_id;
+    let depositFiat = req.body.depositFiat;
+    let depositCrypto = req.body.depositCrypto;
+
+    const update = await kycModel.UpdateSuccessKyc(user_id);
+    
+    console.log('update:',update)
     if (update) {
+      const insert = await kycModel.updatePaymentModule(user_id,depositFiat,depositCrypto);
+      var userActivity = {
+        user_id: req.body.user_id,
+        description: 'KYC Approved!!'
+      }
+      console.log('userActivity:', userActivity)
+      let activity = await userWalletModel.insertActivity(userActivity);
+
       return res
         .status(201)
         .send({ status: true, msg: "kyc accepted successfully by admin" });
@@ -143,9 +164,15 @@ const rejectKyc = async (req, res) => {
         msg: `${errors.errors[0].msg}`,
       });
     }
-    let id = req.params.id;
-    const update = await kycModel.rejectKyc(id);
+    let user_id = req.params.user_id;
+    const update = await kycModel.rejectKyc(user_id);
     if (update) {
+      var userActivity = {
+        user_id: req.params.user_id,
+        description: 'KYC Reject!!'
+      }
+      console.log('userActivity:', userActivity)
+      let activity = await userWalletModel.insertActivity(userActivity);
       return res
         .status(201)
         .send({ status: true, msg: "your kyc is rejected by admin" });

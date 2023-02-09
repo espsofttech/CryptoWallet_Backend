@@ -44,21 +44,24 @@ const registerUser = async (req, res) => {
       headerMSG1,
       mailmsg11
     );
-  
+
     if (mailMsg) {
       let secret = speakeasy.generateSecret({ length: 20 });
       QRCode.toDataURL(secret.otpauth_url, async function (err, data_url) {
         let hash = CryptoJS.SHA256(req.body.password).toString(
           CryptoJS.enc.Hex
         );
-
+        console.log('secret', secret.base32)
         let data = {
           first_name: req.body.first_name,
           last_name: req.body.last_name,
           email: req.body.email,
           password: hash,
+          googleAuthCode: secret.base32,
+          QR_code: data_url,
           image: req.body.image ? req.body.image : "",
         };
+        console.log('data', data)
         const dataEnter = await userModel.saveUserDetails(data);
 
         if (dataEnter) {

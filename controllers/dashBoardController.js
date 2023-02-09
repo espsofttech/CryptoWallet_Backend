@@ -22,4 +22,21 @@ const getdashBoardData = async (req, res) => {
   }
 };
 
-module.exports = { getdashBoardData };
+const getdashBoardDataCountUser = async (req, res) => {
+  try {
+    let user_id = req.params.user_id;
+
+    const AllTransactionList = await supportModel.getAllTransactionList(user_id);
+    if(AllTransactionList)
+
+    return res.status(200).send({
+      status: true,
+      data: AllTransactionList[0],
+    
+    });
+  } catch (err) {
+    return res.status(500).send({ status: false, Error: err.message });
+  }
+};
+
+module.exports = { getdashBoardData,getdashBoardDataCountUser };

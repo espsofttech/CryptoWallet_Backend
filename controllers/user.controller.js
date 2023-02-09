@@ -1,5 +1,7 @@
 const userModel = require("../models/userModel");
 const { validationResult } = require("express-validator");
+const userWalletModel = require("../models/userWalletModel");
+
 const getAllUsers = async (req, res) => {
   try {
     const AllDetails = await userModel.getAllDetail();
@@ -58,6 +60,12 @@ const updateUserById = async (req, res) => {
     const updateUser = await userModel.userUpdateById(req.body, id);
  
     if (updateUser) {
+      var userActivity = {
+        user_id: id,
+        description: 'Profile Update!!'
+      }
+      console.log('userActivity:', userActivity)
+      let activity = await userWalletModel.insertActivity(userActivity);
       return res
         .status(201)
         .send({ status: true, msg: "User details updated successfully" });

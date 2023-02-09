@@ -20,7 +20,7 @@ const withdrawcrypto = async (req, res) => {
     const checkBalance = await userWalletModel.checkBalance(req.body);
     let balance = checkBalance[0].balance;
 
-    if (balance >= amount) {
+    if (balance >= amount && amount > 0) {
       let withdraw = await userWalletModel.withdraw(req.body);
       if (withdraw) {
         let insertWithdrawalDetails = await withdrawalModel.insertDetails(
@@ -30,6 +30,12 @@ const withdrawcrypto = async (req, res) => {
         if (insertWithdrawalDetails) {
           let updateStatus = await withdrawalModel.updateStatus(req.body);
           if (updateStatus) {
+            var userActivity = {
+              user_id: req.body.user_id,
+              description: `Request for crypto withdrawal`
+            }
+
+            let activity = await userWalletModel.insertActivity(userActivity);
             return res.status(201).send({
               status: true,
               msg: "Withdraw successfull and data in withdraw list inserted",
@@ -90,7 +96,7 @@ const updateStatus = async (req, res) => {
 
     let checkUserByid = await withdrawalModel.checkUserByid(req.body);
     if (checkUserByid.length > 0) {
-      console.log('checkUserByid',checkUserByid[0].id)
+
       const updateStatus = await withdrawalModel.updateStatus1(req.body);
 
       if (updateStatus) {
@@ -131,7 +137,7 @@ const bankWithdraw = async (req, res) => {
       const checkBalance = await userWalletModel.checkBalance(req.body);
       let balance = checkBalance[0].balance;
 
-      if (balance >= amount) {
+      if (balance >= amount && amount > 0) {
         const withdraw = await userWalletModel.withdraw(req.body);
 
         if (withdraw) {
@@ -140,6 +146,12 @@ const bankWithdraw = async (req, res) => {
           );
 
           if (insertWithdrawalDetails) {
+            var userActivity = {
+              user_id: req.body.user_id,
+              description: 'Request for INR withdrawal'
+            }
+
+            let activity = await userWalletModel.insertActivity(userActivity);
             return res.status(201).send({
               status: true,
               msg: "Withdraw  successfull and data in withdraw list successfull inserted",

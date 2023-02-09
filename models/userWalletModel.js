@@ -17,6 +17,12 @@ class userWalletModel {
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
+  insertActivity = async (data) => {
+    let sql = `INSERT INTO Activity (user_id,description) VALUES ('${data.user_id}','${data.description}')`;
+    console.log(sql);
+    const [result, fields] = await promisePool.query(sql);
+    return result;
+  };
   checkDataById = async (user_id, coin_id) => {
     let sql = `SELECT * FROM userWallet WHERE  user_id='${user_id}' and coin_id = '${coin_id}'`;
     const [result, fields] = await promisePool.query(sql);
@@ -32,24 +38,24 @@ class userWalletModel {
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
-  updateBalance = async (previousbalance,balance, user_id,coin_id) => {
+  updateBalance = async (previousbalance, balance, user_id, coin_id) => {
     //  console.log(balance)
     let sql = `UPDATE userWallet SET balance=${previousbalance + balance} where user_id='${user_id}' and coin_id='${coin_id}'`;
     const [result, fields] = await promisePool.query(sql);
-   
+
     return result;
   };
 
   updateBalancebyid = async (user_id, coin_id, amount) => {
     let sql = `UPDATE userWallet SET balance=(balance-${amount})where user_id='${user_id}' and coin_id ='${coin_id}'`;
-    console.log('sql1111',sql);
+    console.log('sql1111', sql);
     const [result, fields] = await promisePool.query(sql);
- 
+
     return result;
   };
   Balancebyid = async (user_id, coinId, buyamount) => {
     let sql = `UPDATE userWallet SET balance=(balance+${buyamount})where user_id='${user_id}' and coin_id ='${coinId}'`;
-    console.log('sql1123',sql); 
+    console.log('sql1123', sql);
     const [result, fields] = await promisePool.query(sql);
     return result;
   };
@@ -63,7 +69,7 @@ class userWalletModel {
   Balancebyid1 = async (user_id, coinId, buyamount) => {
     let sql = `UPDATE userWallet SET balance=(balance+${buyamount})where user_id='${user_id}' and coin_id ='${coinId}'`;
     const [result, fields] = await promisePool.query(sql);
-// console.log("111", sql)
+    // console.log("111", sql)
     return result;
   };
 

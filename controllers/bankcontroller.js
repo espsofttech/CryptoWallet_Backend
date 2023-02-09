@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 
 const bankModel = require("../models/bankModel");
+const userWalletModel = require("../models/userWalletModel");
 
 const insertDetails = async (req, res) => {
   try {
@@ -92,7 +93,7 @@ const getBankDetailsByID = async (req, res) => {
           .send({ status: false, msg: "something went wrong" });
       }
     }
-     else {
+    else {
       return res
         .status(404)
         .send({ status: false, msg: "no details found by this user id" });
@@ -167,10 +168,16 @@ const updateDetails = async (req, res) => {
       cancelledChequeImage: req.body.cancelledChequeImage,
       bankStatementImage: req.body.bankStatementImage,
     };
-   
+
     if (checkId.length > 0) {
       const update = await bankModel.updateDetails(data, user_id);
       if (update) {
+        var userActivity = {
+          user_id: user_id,
+          description: 'Update Bank Information'
+        }
+        console.log('userActivity:', userActivity)
+        let activity = await userWalletModel.insertActivity(userActivity);
         return res
           .status(201)
           .send({ status: true, msg: " Data updated successfully" });
@@ -191,10 +198,81 @@ const updateDetails = async (req, res) => {
   }
 };
 
+
+
+const insertAdminBank = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(200).send({
+        status: false,
+        msg: `${errors.errors[0].msg}`,
+      });
+    }
+
+    const insert = await bankModel.insertDetails(req.body);
+    if (insert) {
+      return res.status(201).send({ status: true, msg: "Insert succesfully" });
+    } else {
+      return res
+        .status(400)
+        .send({ status: false, msg: "Something went wrong" });
+    }
+  } catch (err) {
+    return res.status(500).send({ status: false, error: err.message });
+  }
+};
+
+
+const getAdminBank = async (req, res) => {
+  try {
+    const getAllDetails = await bankModel.getDetails();
+    if (getAllDetails) {
+      return res
+        .status(200)
+        .send({ status: true, msg: "successfully", data: getAllDetails });
+    } else {
+      return res
+        .status(400)
+        .send({ status: false, msg: "Something went wrong" });
+    }
+  } catch (err) {
+    return res.status(500).send({ status: false, error: err.message });
+  }
+};
+
+const deleteAdminBank = async (req, res) => {
+  try {
+    let id = req.params.id;
+    const check = await bankModel.checkAdminByid(id);
+    if (check.length > 0) {
+      const deleteData = await bankModel.deleteAdminDetails(id);
+      if (deleteData) {
+        return res
+          .status(201)
+          .send({ status: true, msg: "details deleted sucessfuly" });
+      } else {
+        return res
+          .status(400)
+          .send({ status: false, msg: "Something went wrong" });
+      }
+    } else {
+      return res
+        .status(404)
+        .send({ status: false, msg: "no details found by this id" });
+    }
+  } catch (err) {
+    return res.status(500).send({ status: false, error: err.message });
+  }
+};
+
 module.exports = {
   insertDetails,
   deleteBankDetails,
   getBankDetailsByID,
   getAllBankDetails,
   updateDetails,
+  insertAdminBank,
+  getAdminBank,
+  deleteAdminBank
 };
