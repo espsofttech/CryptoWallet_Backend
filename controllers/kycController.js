@@ -138,21 +138,28 @@ const UpdateSuccessKyc = async (req, res) => {
     const update = await kycModel.UpdateSuccessKyc(user_id);
     
     console.log('update:',update)
-    if (update) {
+    // if (update) {
       if (cryptoType==1){
+        console.log(1);
         const insert = await kycModel.updateUserBtcaddress(user_id,depositCrypto);
       }
       if (cryptoType==2){
+        console.log(2);
+
         const insert = await kycModel.updateUserEthaddress(user_id,depositCrypto);
       }
       if (cryptoType==3){
+        console.log(3);
+
         const insert = await kycModel.updateUserUsdtaddress(user_id,depositCrypto);
       }
       if (cryptoType==4){
+        console.log(4);
         const insert = await kycModel.updateUserUsdcaddress(user_id,depositCrypto);
       }
 
       if (depositFiat!=""){
+        console.log(5);
         const insert = await kycModel.updatePaymentModule(user_id,depositFiat);
       }
 
@@ -167,11 +174,11 @@ const UpdateSuccessKyc = async (req, res) => {
       return res
         .status(201)
         .send({ status: true, msg: "kyc accepted successfully by admin" });
-    } else {
-      return res
-        .status(400)
-        .send({ status: false, msg: "Something went wrong try again later" });
-    }
+    // } else {
+    //   return res
+    //     .status(400)
+    //     .send({ status: false, msg: "Something went wrong try again later" });
+    // }
   } catch (err) {
     console.log(err);
     return res.status(500).send({ status: false, error: err.message });
